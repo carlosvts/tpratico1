@@ -1,0 +1,131 @@
+id,nome,local,ano,paises_envolvidos
+1,Publicação do Manifesto Comunista,Londres,1848,"Reino Unido, Alemanha"
+2,Revoluções de 1848 (Primavera dos Povos),Europa,1848,"França, Alemanha, Áustria, Itália, Hungria, Polônia"
+3,Fundação da Primeira Internacional (AIT),Londres,1864,"Reino Unido, França, Alemanha, Suíça"
+4,Nascimento da Comuna de Paris,Paris,1871,França
+5,Queda e Massacre da Comuna de Paris (Semana Sangrenta),Paris,1871,França
+6,Publicação do Livro I de O Capital,Hamburgo,1867,"Alemanha, Reino Unido"
+7,Fundação da Segunda Internacional,Paris,1889,"França, Alemanha, Áustria, Rússia"
+8,Revolta de Haymarket (Origem do 1º de Maio),Chicago,1886,Estados Unidos
+9,Segunda Guerra Mundial,Global,1939,"Alemanha, União Soviética, Estados Unidos, Reino Unido, Japão, Itália, França, China"
+10,Primeira Guerra Mundial,Global,1914,"Alemanha, França, Reino Unido, Império Austro-Húngaro, Rússia, Estados Unidos, Império Otomano"
+11,Guerra do Golfo,Oriente Médio,1990,"Iraque, Estados Unidos, Kuwait, Reino Unido, Arábia Saudita"
+12,"Publicacão de \"Sofrimentos do Jovem Werther\" por Goethe",Leipzig,1774,Alemanha
+13,Publicação do Manifesto Futurista por Marinetti,Paris,1909,"Itália, França"
+14,Exposição Internacional de Arte Moderna (Armory Show),Nova York,1913,"Estados Unidos, França"
+15,Fundação da Escola Bauhaus por Walter Gropius,Weimar,1919,Alemanha
+16,Semana de Arte Moderna de 1922,São Paulo,1922,Brasil
+17,Publicação de 'Ulysses' de James Joyce,Paris,1922,"Irlanda, França"
+18,Publicação do Manifesto Antropófago por Oswald de Andrade,São Paulo,1928,Brasil
+19,Surgimento da Física Quântica,Berlim,1900,Alemanha
+20,Pintura de Guernica por Pablo Picasso,Paris,1937,"Espanha, França"
+21,Lançamento do filme 'O Couraçado Potemkin' de Eisenstein,Moscou,1925,União Soviética
+22,Lançamento do filme 'Metrópolis' de Fritz Lang,Berlim,1927,Alemanha
+23,Publicação do Primeiro Manifesto Surrealista por André Breton,Paris,1924,França
+24,Descoberta da Doença de Chagas por Carlos Chagas,Lassance,1909,Brasil
+25,Fundação do Cubismo com 'Les Demoiselles d'Avignon',Paris,1907,"França, Espanha"
+26,Exposição do Quadrado Negro de Malevich (Suprematismo),Petrogrado,1915,Rússia
+27,Abertura do Cabaré Voltaire (Nascimento do Dadaísmo),Zurique,1916,Suíça
+28,Primeiro Voo de avião da história (14 Bis),Paris,1906,"Brasil, França"
+29,Construção da Villa Savoye por Le Corbusier,Poissy,1931,França
+30,Lançamento do filme 'Um Cão Andaluz' de Buñuel e Dalí,Paris,1929,"França, Espanha"
+31,Revolução Russa de 1905 (Ensaio Geral),São Petersburgo,1905,Rússia
+32,Revolução de Fevereiro (Queda do Czarismo),Petrogrado,1917,Rússia
+33,Revolução de Outubro (Ascensão Bolchevique),Petrogrado,1917,Rússia
+34,Fim do Império Alemão,Berlim,1918,Alemanha
+35,Revolução de Novembro e Revolta Espartaquista,Berlim,1919,Alemanha
+36,Assassinato de Rosa Luxemburgo e Karl Liebknecht,Berlim,1919,Alemanha
+37,Fundação do Partido Comunista Chinês,Xangai,1921,China
+38,Fundação do Partido Comunista do Brasil (PCB),Niterói,1922,Brasil
+39,Criação da União das Repúblicas Socialistas Soviéticas (URSS),Moscou,1922,União Soviética
+40,Início da Longa Marcha de Mao Tsé-Tung,Jiangxi,1934,China
+41,Guerra Civil Espanhola,Espanha,1936,"Espanha, União Soviética, Alemanha, Itália"
+42,Revolução Chinesa (Proclamação da República Popular),Pequim,1949,China
+43,Revolução Cubana (Tomada de Havana),Havana,1959,Cuba
+44,Crise dos Mísseis de Cuba,Mar do Caribe,1962,"Cuba, União Soviética, Estados Unidos"
+45,Morte de Getulio Vargas,Rio de Janeiro,1954,Brasil
+46,Maio de 1968 ,Paris,1968,França
+47,Primavera de Praga,Praga,1968,Tchecoslováquia
+48,Publicação de Princípios Matemáticos da Filosofia Natural por Isaac Newton,Londres,1687,Reino Unido
+49,Revolução dos Cravos,Lisboa,1974,Portugal
+50,Publicação de A Origem das Espécies por Charles Darwin,Londres,1859,Reino Unido
+51,Fundação da Escola de Frankfurt,Frankfurt,1923,Alemanha
+52,Surgimento da "Teoria da Dependência" ,América Latina,1965,"Brasil, Chile, Argentina, México"
+53,Assassinato de JFK,Dallas,1963,Estados Unidos
+54,Publicação de 'A Obra de Arte na Era de sua Reprodutibilidade Técnica',Paris,1936,"Alemanha, França"
+55,Dia D,Normandia,1944,"Estados Unidos, Reino Unido, França, Canadá, Alemanha"
+56,Publicação de 'O Ser e o Nada' de Jean-Paul Sartre (Existencialismo),Paris,1943,França
+57,Publicação de 'A Sociedade do Espetáculo' de Guy Debord,Paris,1967,França
+58,Batalha de Estalinegrado ,Estalinegrado,1942,"União Soviética, Alemanha"
+59,Publicação de "A Fenomenologia do Espírito" por Georg W. F. Hegel,Bamberg,1807,Alemanha
+60,Batalha de Galipoli,Galípoli,1915,"Império Otomano, Reino Unido, França, Austrália, Nova Zelândia"
+61,Tratado de Brest-Litovski,Brest-Litovski,1918,"Rússia, Alemanha, Áustria-Hungria"
+62,Fundação da Komintern (Terceira Internacional),Moscou,1919,"União Soviética, Alemanha, França, Itália, Vários"
+63,Grande Depressão (Crise de 1929),Global,1929,"Estados Unidos, Reino Unido, Alemanha, França, Global"
+64,Processos de Moscou (Grandes Expurgos Stalinistas),Moscou,1936,União Soviética
+65,Assassinato de Leon Trotsky,Cidade do México,1940,"México, União Soviética"
+66,Batalha de Kursk,Kursk,1943,"União Soviética, Alemanha"
+67,Criação do Muro de Berlim,Berlim,1961,"Alemanha Oriental, União Soviética"
+68,Discurso Secreto de Nikita Khrushchev (Desestalinização),Moscou,1956,União Soviética
+69,Invasão da Ucrânia pela Rússia,Ucrânia,2022,"Rússia, Ucrânia"
+70,Guerra do Vietnã ,Sudeste Asiático,1955,"Vietnã, Estados Unidos"
+71,Pandemia do COVID-19,Global,2020,Global
+72,Pacto Molotov Ribbentrop,Moscou,1939,"União Soviética, Alemanha"
+73,Queda do Muro de Berlim,Berlim,1989,"Alemanha Oriental, Alemanha Ocidental"
+74,Dissolução da União Soviética,Moscou,1991,União Soviética
+75,Massacre da Praça da Paz Celestial,Pequim,1989,China
+76,Homem Vai à Lua,Lua,1969,Estados Unidos
+77,Marie Curie ganha seu segundo Nobel,Estocolmo,1911,"França, Polônia, Suécia"
+78,Revolução Francesa,Paris,1789,França
+79,Revolução Constitucionalista de 1932,São Paulo,1932,Brasil
+80,Coluna Prestes,Brasil,1925,Brasil
+81,Guerras Napoleonicas,Europa,1803,"França, Reino Unido, Áustria, Prússia, Rússia"
+82,Reino do Terror,Paris,1793,França
+83,Construção de Brasília ,Brasília,1960,Brasil
+84,Nascimento de Jesus Cristo,Belém,1,"Israel / Palestina"
+85,Movimento Tropicalista (Tropicália),Rio de Janeiro,1967,Brasil
+86,Inauguração da Torre Eiffel ,Paris,1889,França
+87,Publicação de 'A Interpretação dos Sonhos' de Sigmund Freud,Viena,1900,Áustria
+88,Formulação da Teoria da Relatividade Restrita por Einstein,Berna,1905,"Suíça, Alemanha"
+89,Greve Geral de 1917,São Paulo,1917,Brasil
+90,Queda de Constantinopla ,Constantinopla,1453,"Império Otomano, Império Bizantino"
+91,Criação do Islamismo,Meca,610,Arábia Saudita
+92,Fundação da Quarta Internacional,Périgny,1938,"França, Estados Unidos, União Soviética"
+93,Início do Plano Piloto de Metas de JK,Brasília,1956,Brasil
+94,Lançamento do satélite Sputnik ,Cosmódromo de Baikonur,1957,União Soviética
+95,Publicação de 'Pedagogia do Oprimido' por Paulo Freire,Nova York,1968,"Brasil, Estados Unidos"
+96,Primavera Árabe,Oriente Médio e Norte da África,2010,"Tunísia, Egito, Líbia, Síria, Iêmen"
+97,Greve dos Metalúrgicos do ABC,São Bernardo do Campo,1978,Brasil
+98,Criação do CERN,Genebra,1954,"Suíça, França, Alemanha, Reino Unido"
+99,Levante Zapatista (EZLN) em Chiapas,Chiapas,1994,México
+100,Guerra dos Cem Anos,Europa,1337,"França, Reino Unido"
+101,Proclamação da República ,Rio de Janeiro,1889,Brasil
+102,Abolição da Escravatura,Rio de Janeiro,1888,Brasil
+103,Guerra do Paraguai ,Bacia do Rio da Prata,1864,"Brasil, Paraguai, Argentina, Uruguai"
+104,Campanha da Legalidade,Brasil,1961,Brasil
+105,Golpe Empresarial-Militar de 64,Brasil,1964,"Brasil, Estados Unidos"
+106,AI-5,Brasília,1968,Brasil
+107,Marco Inicial da Bossa Nova,Rio de Janeiro,1958,Brasil
+108,Criação do Lua,Rio de Janeiro,1993,Brasil
+109,Criação do Pascal,Zurique,1970,Suíça
+110,Criação do C ,Nova Jersey,1972,Estados Unidos
+111,Criação da Internet,Estados Unidos,1969,Estados Unidos
+112,Descoberta do Segredo da Enigma,Bletchley Park,1939,"Reino Unido, Polônia, França"
+113,Morte do Alan Turing,Wilmslow,1954,Reino Unido
+114,Assassinato do Dr. Marthin Luther King,Memphis,1968,Estados Unidos
+115,Reforma Protestante,Wittenberg,1517,Alemanha
+116,Intentona Comunista,Brasil,1935,Brasil
+117,Surgimento do Estado Novo,Rio de Janeiro,1937,Brasil
+118,Criação da CLT,Rio de Janeiro,1943,Brasil
+119,Assassinato de George Floyd,Minneapolis,2020,Estados Unidos
+120,Independencia do Brasil,São Paulo,1822,"Brasil, Portugal"
+121,Publicação de "O anti-Édipo" por Deleuze e Guattari,Paris,1972,França
+122,Contrarreforma,Trento,1545,"Itália, Cidade do Vaticano"
+123,Criação da banda The Beatles,Liverpool,1960,Reino Unido
+124,Morte de Buddy Holly,Clear Lake,1959,Estados Unidos
+125,Genocido Armeno,Império Otomano,1915,"Turquia, Armênia"
+126,Queda do Império Otomano,Ancara / Istambul,1922,Turquia
+127,Criação do Estado de Israel,Tel Aviv,1948,Israel
+128,Premio Nobel da Literatura para Bob Dylan,Estocolmo,2016,"Estados Unidos, Suécia"
+129,Marcha em Roma,Roma,1922,Itália
+130,Putsch de Munique,Munique,1923,Alemanha
