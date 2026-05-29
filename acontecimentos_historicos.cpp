@@ -85,6 +85,7 @@ int main() {
         acontecimentos[indice_acontecimento].paises_envolvidos = campo;
         campo = "";
 
+        // preenche vetor
         acontecimentos[indice_acontecimento].id = string_para_int(campos[0]);
         acontecimentos[indice_acontecimento].nome = campos[1];
         acontecimentos[indice_acontecimento].local = campos[2];
@@ -93,4 +94,5 @@ int main() {
 
         indice_acontecimento++;
     }
+    // TODO a partir de agora todos os dados estão carregadas na struct
 }
