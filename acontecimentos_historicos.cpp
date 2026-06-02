@@ -12,7 +12,7 @@ struct Acontecimento {
     string paises_envolvidos;
 };
 
-Acontecimento* rediensiona_vetor(Acontecimento* vetor, int& tamanho_atual) {
+void redimensiona_vetor(Acontecimento*& vetor, int& tamanho_atual) {
     int tamanho_antigo = tamanho_atual;
     Acontecimento* novo_vetor = new Acontecimento[tamanho_atual + 5];
     // copia os elementos do vetor antigo para o vetor novo
@@ -23,7 +23,7 @@ Acontecimento* rediensiona_vetor(Acontecimento* vetor, int& tamanho_atual) {
     delete[] vetor;
 
     tamanho_atual += 5;
-    return novo_vetor;
+    vetor = novo_vetor;
 }
 
 int string_para_int(string str) {
@@ -62,8 +62,8 @@ int main() {
         i = 0;
 
         if (indice_acontecimento == capacidade) {
-            // rediensiona_vetor aumenta a capacidade por referencia
-            acontecimentos = rediensiona_vetor(acontecimentos, capacidade);
+            // redimensiona_vetor aumenta a capacidade por referencia
+            redimensiona_vetor(acontecimentos, capacidade);
         }
 
         while (linha[i] != '\0') {
