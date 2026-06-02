@@ -4,6 +4,9 @@
 
 using namespace std;
 
+const int FATOR_AUMENTO_VETOR = 5;
+const int QUANTIDADE_INICIAL_VETOR = 40;
+
 struct Acontecimento {
     int id;
     string nome;
@@ -14,7 +17,8 @@ struct Acontecimento {
 
 void redimensiona_vetor(Acontecimento*& vetor, int& tamanho_atual) {
     int tamanho_antigo = tamanho_atual;
-    Acontecimento* novo_vetor = new Acontecimento[tamanho_atual + 5];
+    Acontecimento* novo_vetor =
+        new Acontecimento[tamanho_atual + FATOR_AUMENTO_VETOR];
     // copia os elementos do vetor antigo para o vetor novo
     for (int i = 0; i < tamanho_antigo; i++) {
         novo_vetor[i] = vetor[i];
@@ -28,7 +32,7 @@ void redimensiona_vetor(Acontecimento*& vetor, int& tamanho_atual) {
 
 int string_para_int(string str) {
     int resposta = 0;
-    for (int i = 0; i < str.size(); i++) {
+    for (int i = 0; i < (int)str.size(); i++) {
         // pensando no numero 123
         // resposta = 0 * 10 + 1 --> resposta  = 1
         // resposta = 1 * 10 + 2 --> resposta  = 12
@@ -40,7 +44,7 @@ int string_para_int(string str) {
 
 int main() {
     // capacidade inicial
-    int capacidade = 40;
+    int capacidade = QUANTIDADE_INICIAL_VETOR;
     Acontecimento* acontecimentos = new Acontecimento[capacidade];
     ifstream entrada("acontecimentos_historicos.csv");
     if (not(entrada)) {
@@ -95,4 +99,8 @@ int main() {
         indice_acontecimento++;
     }
     // TODO a partir de agora todos os dados estão carregadas na struct
+
+    // Finalizada toda a lógica, limpa o vetor
+    delete[] acontecimentos;
+    return 0;
 }
