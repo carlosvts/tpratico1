@@ -2,6 +2,19 @@
 #include <iostream>
 #include <string>
 
+/*
+ *  O que precisa ser feito:
+ *  Gravar alterações (remoções e inserções)
+ *  Buscar um registro
+ *  Mostrar na tela o arquivo inteiro e um trecho
+ *  Ordenar os dados
+ *
+ *  O que já foi feito:
+ *  Carregar CSV,
+ *  Alocar dinamicamente,
+ *  criar, remover e adicionar acontecimentos
+ */
+
 using namespace std;
 
 const int FATOR_AUMENTO_VETOR = 5;
@@ -13,21 +26,66 @@ struct Acontecimento {
     string local;
     int ano;
     string paises_envolvidos;
+    bool removido = false;
 };
 
-void redimensiona_vetor(Acontecimento*& vetor, int& tamanho_atual) {
-    int tamanho_antigo = tamanho_atual;
-    Acontecimento* novo_vetor =
-        new Acontecimento[tamanho_atual + FATOR_AUMENTO_VETOR];
+// por cópia
+Acontecimento cria_acontecimento(string nome, string local, int ano,
+                                 string paises_envolvidos) {
+    // Defini que um id -1 significa que o objeto foi criado, mas ainda não está
+    // adicionado na base de dados
+    return Acontecimento{-1, nome, local, ano, paises_envolvidos};
+}
+
+void redimensiona_vetor(Acontecimento*& vetor, int& capacidade,
+                        int fator_aumento) {
+    int capacidade_antiga = capacidade;
+    Acontecimento* novo_vetor = new Acontecimento[capacidade + fator_aumento];
     // copia os elementos do vetor antigo para o vetor novo
-    for (int i = 0; i < tamanho_antigo; i++) {
+    for (int i = 0; i < capacidade_antiga; i++) {
         novo_vetor[i] = vetor[i];
     }
     // limpa o espaço de memória do vetor antigo
     delete[] vetor;
 
-    tamanho_atual += 5;
+    capacidade += fator_aumento;
     vetor = novo_vetor;
+}
+
+void adiciona_acontecimento(Acontecimento*& vetor, int& tamanho_atual,
+                            int& capacidade, Acontecimento ac, int& ultimo_id) {
+    // aqui redimensiona o vetor somente em um, já que estamos adicionando
+    if (tamanho_atual == capacidade) {
+        redimensiona_vetor(vetor, capacidade, 1);
+    }
+    // fazendo "manualmente" para evitar erros de ponteiros da string
+    ac.id = ++ultimo_id;
+    vetor[tamanho_atual].id = ac.id;
+    vetor[tamanho_atual].nome = ac.nome;
+    vetor[tamanho_atual].local = ac.local;
+    vetor[tamanho_atual].ano = ac.ano;
+    vetor[tamanho_atual].paises_envolvidos = ac.paises_envolvidos;
+    tamanho_atual++;
+}
+
+void remove_acontecimento(Acontecimento*& vetor, int& tamanho_atual,
+                          Acontecimento& ac, int& ultimo_id) {
+    bool removeu = false;
+    // loop pelos acontecimentos
+    for (int i = 0; i < tamanho_atual; ++i) {
+        // para saber qual é o acontecimento, basta checar o seu id
+        if (vetor[i].id == ac.id) {
+            // como a remoção pode ser feita de forma lógica
+            // basta colocar a flag = true
+            vetor[i].removido = true;
+            removeu = true;
+        }
+    }
+    if (!removeu) {
+        cout << "ID: " << ac.id << "[" << ac.nome
+             << "] Não existe na base de dados \n tem certeza que você o "
+                "adicionou?\n";
+    }
 }
 
 int string_para_int(string str) {
@@ -55,7 +113,8 @@ int main() {
     string linha;
     int idx = 0;
     int i = 0;
-    int indice_acontecimento = 0;
+    int ultimo_id = 0;
+    int tamanho = 0;
     bool aspas = false;
 
     getline(entrada, linha);  // Pula o cabeçalho
@@ -65,15 +124,17 @@ int main() {
         aspas = false;
         i = 0;
 
-        if (indice_acontecimento == capacidade) {
+        if (tamanho == capacidade) {
             // redimensiona_vetor aumenta a capacidade por referencia
-            redimensiona_vetor(acontecimentos, capacidade);
+            redimensiona_vetor(acontecimentos, capacidade, FATOR_AUMENTO_VETOR);
         }
 
         while (linha[i] != '\0') {
             // checa se é uma aspas duplas
             if (linha[i] == '"') {
-                aspas = true;
+                // Precisa ser !aspas e nao aspas = true pois se tudo for
+                // true ele sempre ignorará as aspas
+                aspas = !aspas;
             } else if (linha[i] == ',' and !aspas) {
                 campos[idx] = campo;
                 campo = "";
@@ -86,19 +147,54 @@ int main() {
 
         // ultimo campo
         campos[idx] = campo;
-        acontecimentos[indice_acontecimento].paises_envolvidos = campo;
+        acontecimentos[tamanho].paises_envolvidos = campo;
         campo = "";
 
         // preenche vetor
-        acontecimentos[indice_acontecimento].id = string_para_int(campos[0]);
-        acontecimentos[indice_acontecimento].nome = campos[1];
-        acontecimentos[indice_acontecimento].local = campos[2];
-        acontecimentos[indice_acontecimento].ano = string_para_int(campos[3]);
-        acontecimentos[indice_acontecimento].paises_envolvidos = campos[4];
-
-        indice_acontecimento++;
+        acontecimentos[tamanho].id = string_para_int(campos[0]);
+        acontecimentos[tamanho].nome = campos[1];
+        acontecimentos[tamanho].local = campos[2];
+        acontecimentos[tamanho].ano = string_para_int(campos[3]);
+        acontecimentos[tamanho].paises_envolvidos = campos[4];
+        // nao precisa marcar o removido como false pois a struct ja é
+        // criada com valor padrão de false
+        tamanho++;
     }
+    ultimo_id = acontecimentos[tamanho - 1].id;
     // TODO a partir de agora todos os dados estão carregadas na struct
+
+    // print de debug, remover depois
+    Acontecimento teste =
+        cria_acontecimento("teste1", "local de teste", 2026, "Brasil");
+    adiciona_acontecimento(acontecimentos, tamanho, capacidade, teste,
+                           ultimo_id);
+
+    Acontecimento teste_remover = cria_acontecimento(
+        "Removido??", "Remoção", 2026, "Brasil, México, Removido");
+    adiciona_acontecimento(acontecimentos, tamanho, capacidade, teste_remover,
+                           ultimo_id);
+    remove_acontecimento(acontecimentos, tamanho, teste_remover, ultimo_id);
+
+    // Testando remover um acontecimento sem ter colocado ele na base de dados
+    Acontecimento teste2 = cria_acontecimento("Removi222do??", "Remoção2", 2026,
+                                              "Brasil, 22México, Removido");
+
+    cout << "===== DEBUG: ACONTECIMENTOS CARREGADOS =====\n";
+    for (int i = 0; i < tamanho; i++) {
+        cout << "Registro #" << i << '\n';
+        cout << "ID: " << acontecimentos[i].id << '\n';
+        cout << "Nome: " << acontecimentos[i].nome << '\n';
+        cout << "Local: " << acontecimentos[i].local << '\n';
+        cout << "Ano: " << acontecimentos[i].ano << '\n';
+        cout << "Paises: " << acontecimentos[i].paises_envolvidos << '\n';
+        cout << "Removido: " << acontecimentos[i].removido << '\n';
+        cout << "----------------------------------------\n";
+    }
+
+    cout << "Quantidade carregada: " << tamanho << '\n';
+    cout << "Capacidade do vetor: " << capacidade << '\n';
+
+    remove_acontecimento(acontecimentos, tamanho, teste2, ultimo_id);
 
     // Finalizada toda a lógica, limpa o vetor
     delete[] acontecimentos;
