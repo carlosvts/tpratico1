@@ -151,17 +151,15 @@ void buscaBinaria_por_data(Acontecimento* vet,int pInicial,int pFinal,int k){
     if(pFinal > pInicial){
         if(vet[meio].ano > k)
         {
-            return buscaBinaria_por_data(vet,meio+1,pFinal,k);
+            return buscaBinaria_por_data(vet, pInicial, meio - 1, k);
         }
         else if(vet[meio].ano < k)
         {
-            return buscaBinaria_por_data(vet,pInicial,meio-1,k);
+            return buscaBinaria_por_data(vet, meio + 1, pFinal, k);
         }
     }else{
         cout << "Nenhum 'Acontecimento Historico' encontrado na data escolhida!" << endl;
     }
-    
-
 }
 
 
