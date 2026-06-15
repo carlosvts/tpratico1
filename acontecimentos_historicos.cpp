@@ -100,6 +100,71 @@ int string_para_int(string str) {
     return resposta;
 }
 
+
+void busca_por_nome(Acontecimento* vetor,int tamanho, string nome){
+    bool achou = false;
+    for(int i = 0; i < tamanho; i++){
+        if(vetor[i].nome == nome){
+        cout << "Registro #" << i << '\n';
+        cout << "ID: " << vetor[i].id << '\n';
+        cout << "Nome: " << vetor[i].nome << '\n';
+        cout << "Local: " << vetor[i].local << '\n';
+        cout << "Ano: " << vetor[i].ano << '\n';
+        cout << "Paises: " << vetor[i].paises_envolvidos << '\n';
+        cout << "----------------------------------------\n";
+        achou = true;
+        }
+    }
+     if(!achou){
+        cout <<"Nao achamos o acontecimento historico digitado!" << endl;
+     }
+}
+
+//ordenaçao para busca binaria por ano
+void ordena_por_ano(Acontecimento* vetor, int tamanho){
+  int j;
+  for(int gap = tamanho/2; gap > 0; gap /= 2){
+      for(int i = gap; i < tamanho; i++){
+        Acontecimento aux = vetor[i];
+        
+        j = i;
+        while(j >= gap and vetor[j-gap].ano > aux.ano){
+          vetor[j] = vetor[j-gap];
+          j -= gap;
+        }
+        vetor[j] = aux;
+      }
+  }
+}
+
+void buscaBinaria_por_data(Acontecimento* vet,int pInicial,int pFinal,int k){
+    int meio = (pInicial + pFinal)/2;
+    if(vet[meio].ano == k){
+        cout << "Registro #" << meio << '\n';
+        cout << "ID: " << vet[meio].id << '\n';
+        cout << "Nome: " << vet[meio].nome << '\n';
+        cout << "Local: " << vet[meio].local << '\n';
+        cout << "Ano: " << vet[meio].ano << '\n';
+        cout << "Paises: " << vet[meio].paises_envolvidos << '\n';
+        cout << "----------------------------------------\n";
+    }
+    if(pFinal > pInicial){
+        if(vet[meio].ano > k)
+        {
+            return buscaBinaria_por_data(vet,meio+1,pFinal,k);
+        }
+        else if(vet[meio].ano < k)
+        {
+            return buscaBinaria_por_data(vet,pInicial,meio-1,k);
+        }
+    }else{
+        cout << "Nenhum 'Acontecimento Historico' encontrado na data escolhida!" << endl;
+    }
+    
+
+}
+
+
 int main() {
     // capacidade inicial
     int capacidade = QUANTIDADE_INICIAL_VETOR;
@@ -179,6 +244,9 @@ int main() {
     Acontecimento teste2 = cria_acontecimento("Removi222do??", "Remoção2", 2026,
                                               "Brasil, 22México, Removido");
 
+    //teste da ordenaçao por data                                      
+    //ordena_por_ano(acontecimentos,tamanho); 
+
     cout << "===== DEBUG: ACONTECIMENTOS CARREGADOS =====\n";
     for (int i = 0; i < tamanho; i++) {
         cout << "Registro #" << i << '\n';
@@ -195,6 +263,17 @@ int main() {
     cout << "Capacidade do vetor: " << capacidade << '\n';
 
     remove_acontecimento(acontecimentos, tamanho, teste2, ultimo_id);
+
+    ordena_por_ano(acontecimentos,tamanho);
+    
+    /*busca linear por nome
+    string procurado;
+    getline(cin,procurado);
+    busca_por_nome(acontecimentos,tamanho, procurado);
+    */
+
+    
+
 
     // Finalizada toda a lógica, limpa o vetor
     delete[] acontecimentos;
