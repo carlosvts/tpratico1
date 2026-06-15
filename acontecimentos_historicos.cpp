@@ -163,6 +163,20 @@ void buscaBinaria_por_data(Acontecimento* vet,int pInicial,int pFinal,int k){
     
 
 }
+//usa data inicial e final do internalo(Ex; acontecimentos,1990,2000,tamanho)
+void busca_por_intervalo(Acontecimento* vet, int inicio,int final,int tamanho) {
+    
+    for(int i=0;i <= tamanho;i++)
+        if(vet[i].ano >= inicio and vet[i].ano <= final){
+        cout << "Registro #" << i << '\n';
+        cout << "ID: " << vet[i].id << '\n';
+        cout << "Nome: " << vet[i].nome << '\n';
+        cout << "Local: " << vet[i].local << '\n';
+        cout << "Ano: " << vet[i].ano << '\n';
+        cout << "Paises: " << vet[i].paises_envolvidos << '\n';
+    }
+
+}
 
 
 int main() {
@@ -246,7 +260,7 @@ int main() {
 
     //teste da ordenaçao por data                                      
     //ordena_por_ano(acontecimentos,tamanho); 
-
+    ordena_por_ano(acontecimentos,tamanho);
     cout << "===== DEBUG: ACONTECIMENTOS CARREGADOS =====\n";
     for (int i = 0; i < tamanho; i++) {
         cout << "Registro #" << i << '\n';
@@ -264,7 +278,7 @@ int main() {
 
     remove_acontecimento(acontecimentos, tamanho, teste2, ultimo_id);
 
-    ordena_por_ano(acontecimentos,tamanho);
+    
     
     /*busca linear por nome
     string procurado;
@@ -272,7 +286,10 @@ int main() {
     busca_por_nome(acontecimentos,tamanho, procurado);
     */
 
+    int Ano;
+    cin >> Ano;
     
+    buscaBinaria_por_data(acontecimentos,0,tamanho-1,Ano);
 
 
     // Finalizada toda a lógica, limpa o vetor
