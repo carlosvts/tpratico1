@@ -1,18 +1,31 @@
+/*
+# * Equipe:
+# * Carlos Vinicius Teixeira de Souza
+# * Alexsandro Ferreira de Carvalho
+# * Ana Julia Piva de Oliveira Gurita
+# *
+# * Tema: Acontecimentos historicos
+# * Campos: id, nome, local, ano, paises_envolvidos, removido
+# */
+
 #include <fstream>
 #include <iostream>
 #include <string>
 
 /*
- *  O que precisa ser feito:
- *  Gravar alterações (remoções e inserções)
- *  Buscar um registro
- *  Mostrar na tela o arquivo inteiro e um trecho
- *  Ordenar os dados
+ *  Falta:
+ *  Menu principal
+ *  Gravar alterações no CSV
+ *  Impressão por trecho
+ *  Segunda ordenação
+ *  Integrar buscas e operações com entrada do usuário
  *
- *  O que já foi feito:
- *  Carregar CSV,
- *  Alocar dinamicamente,
- *  criar, remover e adicionar acontecimentos
+ *  Feito:
+ *  Leitura do CSV
+ *  Vetor dinâmico com redimensionamento
+ *  Inserção e remoção lógica
+ *  Busca por nome e por ano
+ *  Ordenação por ano
  */
 
 using namespace std;
