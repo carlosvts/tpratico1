@@ -42,7 +42,8 @@ void redimensiona_vetor(Acontecimento*& vetor, int& capacidade,
     int capacidade_antiga = capacidade;
     Acontecimento* novo_vetor = new Acontecimento[capacidade + fator_aumento];
     // copia os elementos do vetor antigo para o vetor novo
-    for (int i = 0; i < capacidade_antiga; i++) {
+    for (int i = 0; i < capacidade_antiga; i++) 
+    {
         novo_vetor[i] = vetor[i];
     }
     // limpa o espaço de memória do vetor antigo
@@ -55,7 +56,8 @@ void redimensiona_vetor(Acontecimento*& vetor, int& capacidade,
 void adiciona_acontecimento(Acontecimento*& vetor, int& tamanho_atual,
                             int& capacidade, Acontecimento ac, int& ultimo_id) {
     // aqui redimensiona o vetor somente em um, já que estamos adicionando
-    if (tamanho_atual == capacidade) {
+    if (tamanho_atual == capacidade) 
+    {
         redimensiona_vetor(vetor, capacidade, 1);
     }
     // fazendo "manualmente" para evitar erros de ponteiros da string
@@ -72,16 +74,19 @@ void remove_acontecimento(Acontecimento*& vetor, int& tamanho_atual,
                           Acontecimento& ac, int& ultimo_id) {
     bool removeu = false;
     // loop pelos acontecimentos
-    for (int i = 0; i < tamanho_atual; ++i) {
+    for (int i = 0; i < tamanho_atual; ++i)
+    {
         // para saber qual é o acontecimento, basta checar o seu id
-        if (vetor[i].id == ac.id) {
+        if (vetor[i].id == ac.id)
+        {
             // como a remoção pode ser feita de forma lógica
             // basta colocar a flag = true
             vetor[i].removido = true;
             removeu = true;
         }
     }
-    if (!removeu) {
+    if (!removeu)
+    {
         cout << "ID: " << ac.id << "[" << ac.nome
              << "] Não existe na base de dados \n tem certeza que você o "
                 "adicionou?\n";
@@ -90,7 +95,8 @@ void remove_acontecimento(Acontecimento*& vetor, int& tamanho_atual,
 
 int string_para_int(string str) {
     int resposta = 0;
-    for (int i = 0; i < (int)str.size(); i++) {
+    for (int i = 0; i < (int)str.size(); i++)
+    {
         // pensando no numero 123
         // resposta = 0 * 10 + 1 --> resposta  = 1
         // resposta = 1 * 10 + 2 --> resposta  = 12
@@ -103,43 +109,50 @@ int string_para_int(string str) {
 
 void busca_por_nome(Acontecimento* vetor,int tamanho, string nome){
     bool achou = false;
-    for(int i = 0; i < tamanho; i++){
-        if(vetor[i].nome == nome){
-        cout << "Registro #" << i << '\n';
-        cout << "ID: " << vetor[i].id << '\n';
-        cout << "Nome: " << vetor[i].nome << '\n';
-        cout << "Local: " << vetor[i].local << '\n';
-        cout << "Ano: " << vetor[i].ano << '\n';
-        cout << "Paises: " << vetor[i].paises_envolvidos << '\n';
-        cout << "----------------------------------------\n";
-        achou = true;
+    for (int i = 0; i < tamanho; i++)
+    {
+        if (vetor[i].nome == nome)
+        {
+            cout << "Registro #" << i << '\n';
+            cout << "ID: " << vetor[i].id << '\n';
+            cout << "Nome: " << vetor[i].nome << '\n';
+            cout << "Local: " << vetor[i].local << '\n';
+            cout << "Ano: " << vetor[i].ano << '\n';
+            cout << "Paises: " << vetor[i].paises_envolvidos << '\n';
+            cout << "----------------------------------------\n";
+            achou = true;
         }
     }
-     if(!achou){
-        cout <<"Nao achamos o acontecimento historico digitado!" << endl;
+     if (!achou)
+     {
+        cout << "Nao achamos o acontecimento historico digitado!" << endl;
      }
 }
 
 //ordenaçao para busca binaria por ano
 void ordena_por_ano(Acontecimento* vetor, int tamanho){
-  int j;
-  for(int gap = tamanho/2; gap > 0; gap /= 2){
-      for(int i = gap; i < tamanho; i++){
-        Acontecimento aux = vetor[i];
-        
-        j = i;
-        while(j >= gap and vetor[j-gap].ano > aux.ano){
-          vetor[j] = vetor[j-gap];
-          j -= gap;
-        }
-        vetor[j] = aux;
+    int j;
+    for (int gap = tamanho/2; gap > 0; gap /= 2)
+    {
+        for (int i = gap; i < tamanho; i++)
+        {
+          Acontecimento aux = vetor[i];
+
+          j = i;
+          while (j >= gap and vetor[j-gap].ano > aux.ano)
+          {
+            vetor[j] = vetor[j-gap];
+            j -= gap;
+          }
+          vetor[j] = aux;
       }
-  }
+    }
 }
 
 void buscaBinaria_por_data(Acontecimento* vet,int pInicial,int pFinal,int k){
     int meio = (pInicial + pFinal)/2;
-    if(vet[meio].ano == k){
+    if (vet[meio].ano == k)
+    {
         cout << "Registro #" << meio << '\n';
         cout << "ID: " << vet[meio].id << '\n';
         cout << "Nome: " << vet[meio].nome << '\n';
@@ -148,16 +161,19 @@ void buscaBinaria_por_data(Acontecimento* vet,int pInicial,int pFinal,int k){
         cout << "Paises: " << vet[meio].paises_envolvidos << '\n';
         cout << "----------------------------------------\n";
     }
-    if(pFinal > pInicial){
-        if(vet[meio].ano > k)
+    if (pFinal > pInicial)
+    {
+        if (vet[meio].ano > k)
         {
             return buscaBinaria_por_data(vet, pInicial, meio - 1, k);
         }
-        else if(vet[meio].ano < k)
+        else if (vet[meio].ano < k)
         {
             return buscaBinaria_por_data(vet, meio + 1, pFinal, k);
         }
-    }else{
+    }
+    else
+    {
         cout << "Nenhum 'Acontecimento Historico' encontrado na data escolhida!" << endl;
     }
 }
