@@ -357,8 +357,8 @@ int main() {
 
     //teste gravar
 
-        remove_acontecimento(acontecimentos,tamanho,teste_gravar,ultimo_id);
-        cout << teste_gravar.removido;
+        remove_acontecimento(acontecimentos,tamanho,teste_gravar,teste_gravar.id);
+       
         gravarModificao_no_csv(acontecimentos,tamanho);
         
 
