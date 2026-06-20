@@ -100,7 +100,28 @@ int string_para_int(string str) {
     return resposta;
 }
 
+void gravarModificao_no_csv(Acontecimento* vet,int tamanho){
+    ofstream gravar("novo_acontecimentos_historicos.csv");
+     if(!gravar){
+        cout << "Erro ao gravar modificação!" << endl;
+     }else
+
+     gravar << "id,nome,local,ano,paises_envolvidos\n";
+     for(int i = 0; i < tamanho;i++){
+        if(vet[i].removido == false) {
+            gravar << vet[i].id << ",";
+            gravar << vet[i].nome << ",";
+            gravar << vet[i].local << ",";
+            gravar << vet[i].ano << ",";
+            gravar << '"' << vet[i].paises_envolvidos << '"' << "\n";
+        }
+     }
+     gravar.close();
+
+}
+
 void imprimiVetor(Acontecimento* vet,int indice){
+    if(vet[indice].removido == false){
         cout << "Registro #" << indice << '\n';
         cout << "ID: " << vet[indice].id << '\n';
         cout << "Nome: " << vet[indice].nome << '\n';
@@ -108,7 +129,7 @@ void imprimiVetor(Acontecimento* vet,int indice){
         cout << "Ano: " << vet[indice].ano << '\n';
         cout << "Paises: " << vet[indice].paises_envolvidos << '\n';
         cout << "----------------------------------------\n";
-
+    }
 }
 
 
@@ -308,7 +329,16 @@ int main() {
                                               "Brasil, 22México, Removido");
 
     
-   /* cout << "===== DEBUG: ACONTECIMENTOS CARREGADOS =====\n";
+
+
+    ordena_por_id(acontecimentos,tamanho);
+
+    //acontecimento de teste_gravar
+    Acontecimento teste_gravar = cria_acontecimento("Brasil x Haite","Mexico",2026,"Brasil e Haite");
+    adiciona_acontecimento(acontecimentos,tamanho,capacidade,teste_gravar,ultimo_id);
+    
+
+    cout << "===== DEBUG: ACONTECIMENTOS CARREGADOS =====\n";
     for (int i = 0; i < tamanho; i++) {
         cout << "Registro #" << i << '\n';
         cout << "ID: " << acontecimentos[i].id << '\n';
@@ -322,8 +352,17 @@ int main() {
 
     cout << "Quantidade carregada: " << tamanho << '\n';
     cout << "Capacidade do vetor: " << capacidade << '\n';
-*/
+
     remove_acontecimento(acontecimentos, tamanho, teste2, ultimo_id);
+
+    //teste gravar
+
+        remove_acontecimento(acontecimentos,tamanho,teste_gravar,ultimo_id);
+        cout << teste_gravar.removido;
+        gravarModificao_no_csv(acontecimentos,tamanho);
+        
+
+
     /*teste da ordenaçao por ano
     ordena_por_ano(acontecimentos,tamanho);
     cout <<"---------------------------------------------\n";
