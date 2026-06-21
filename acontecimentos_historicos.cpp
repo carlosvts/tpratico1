@@ -119,95 +119,160 @@ int string_para_int(string str) {
     return resposta;
 }
 
-void imprimeVetor(Acontecimento* vet, int meio){
-        cout << "Registro #" << meio << '\n';
-        cout << "ID: " << vet[meio].id << '\n';
-        cout << "Nome: " << vet[meio].nome << '\n';
-        cout << "Local: " << vet[meio].local << '\n';
-        cout << "Ano: " << vet[meio].ano << '\n';
-        cout << "Paises: " << vet[meio].paises_envolvidos << '\n';
-        cout << "----------------------------------------\n";
+void gravarModificao_no_csv(Acontecimento* vet,int tamanho){
+    ofstream gravar("novo_acontecimentos_historicos.csv");
+     if(!gravar){
+        cout << "Erro ao gravar modificação!" << endl;
+     }else
 
-}
-
-void busca_por_nome(Acontecimento* vetor, int tamanho, string nome){
-    bool achou = false;
-    for (int i = 0; i < tamanho; i++)
-    {
-        if (vetor[i].nome == nome)
-        {
-            imprimeVetor(vetor, i);
-            achou = true;
+     gravar << "id,nome,local,ano,paises_envolvidos\n";
+     for(int i = 0; i < tamanho;i++){
+        if(vet[i].removido == false) {
+            gravar << vet[i].id << ",";
+            gravar << vet[i].nome << ",";
+            gravar << vet[i].local << ",";
+            gravar << vet[i].ano << ",";
+            gravar << '"' << vet[i].paises_envolvidos << '"' << "\n";
         }
-    }
-    if (not(achou))
-    {
-        cout << "Nao achamos o acontecimento historico digitado!" << endl;
+     }
+     gravar.close();
+
+}
+
+void imprimiVetor(Acontecimento* vet,int indice){
+    if(vet[indice].removido == false){
+        cout << "Registro #" << indice << '\n';
+        cout << "ID: " << vet[indice].id << '\n';
+        cout << "Nome: " << vet[indice].nome << '\n';
+        cout << "Local: " << vet[indice].local << '\n';
+        cout << "Ano: " << vet[indice].ano << '\n';
+        cout << "Paises: " << vet[indice].paises_envolvidos << '\n';
+        cout << "----------------------------------------\n";
     }
 }
+
+
 
 //ordenaçao para busca binaria por ano
-void ordena_por_ano(Acontecimento*& vetor, unsigned int tamanho){
-    int j;
-    for (int gap = tamanho/2; gap > 0; gap /= 2)
-    {
-        for (unsigned int i = gap; i < tamanho; i++)
-        {
-          Acontecimento aux = vetor[i];
-
-          j = i;
-          while (j >= gap and vetor[j-gap].ano > aux.ano)
-          {
-            vetor[j] = vetor[j-gap];
-            j -= gap;
-          }
-          vetor[j] = aux;
+void ordena_por_ano(Acontecimento*& vetor, int tamanho){
+  int j;
+  for(int gap = tamanho/2; gap > 0; gap /= 2){
+      for(int i = gap; i < tamanho; i++){
+        Acontecimento aux = vetor[i];
+        
+        j = i;
+        while(j >= gap and vetor[j-gap].ano > aux.ano){
+          vetor[j] = vetor[j-gap];
+          j -= gap;
+        }
+        vetor[j] = aux;
       }
-    }
+  }
 }
 
-void buscaBinaria_por_data(Acontecimento* vet, int pInicial, int pFinal, int k){
-    int meio = (pInicial + pFinal) / 2;
-    
-    if (vet[meio].ano == k)
-    {
-        imprimeVetor(vet, meio);
-                int olha_esqueda = meio -1;
+//ordenaçao por id
+void ordena_por_id(Acontecimento*& vetor, int tamanho){
+  int j;
+  for(int gap = tamanho/2; gap > 0; gap /= 2){
+      for(int i = gap; i < tamanho; i++){
+        Acontecimento aux = vetor[i];
+        
+        j = i;
+        while(j >= gap and vetor[j-gap].id > aux.id){
+          vetor[j] = vetor[j-gap];
+          j -= gap;
+        }
+        vetor[j] = aux;
+      }
+  }
+}
+void buscaBinaria_por_data(Acontecimento* vet,int pInicial,int pFinal,int k){
+    int meio = (pInicial + pFinal)/2;
+    if(vet[meio].ano == k){
+        imprimiVetor(vet,meio);
 
-        while (vet[olha_esqueda].ano == vet[meio].ano){
-            imprimeVetor(vet,olha_esqueda);
+        int olha_esqueda = meio -1;
+        while(olha_esqueda >= 0 and vet[olha_esqueda].ano == vet[meio].ano ){
+            imprimiVetor(vet,olha_esqueda);
             olha_esqueda--;
         }
 
         int olha_direita = meio+1;
-        while (vet[olha_direita].ano == vet[meio].ano){
-            imprimeVetor(vet,olha_direita);
+         while( olha_direita <= pFinal and vet[olha_direita].ano == vet[meio].ano ){
+            imprimiVetor(vet,olha_direita);
             olha_direita++;
          }
+         
     }
 
-    if (pFinal > pInicial)
-    {
-        if (vet[meio].ano > k)
+    if(pFinal > pInicial){
+        if(vet[meio].ano < k)
         {
-            return buscaBinaria_por_data(vet, pInicial, meio - 1, k);
+            return buscaBinaria_por_data(vet,meio+1,pFinal,k);
         }
-        else if (vet[meio].ano < k)
+        else if(vet[meio].ano > k)
         {
-            return buscaBinaria_por_data(vet, meio + 1, pFinal, k);
+            return buscaBinaria_por_data(vet,pInicial,meio-1,k);
         }
-    }
-    else
-    {
+    }else{
         cout << "Nenhum 'Acontecimento Historico' encontrado na data escolhida!" << endl;
     }
 }
+
+
+void buscaBinaria_por_id(Acontecimento* vet,int pInicial,int pFinal,int k){
+    int meio = (pInicial + pFinal)/2;
+    if(vet[meio].id== k){
+        imprimiVetor(vet,meio);
+
+    }
+
+    if(pFinal > pInicial){
+        if(vet[meio].id < k)
+        {
+            return buscaBinaria_por_id(vet,meio+1,pFinal,k);
+        }
+        else if(vet[meio].id > k)
+        {
+            return buscaBinaria_por_id(vet,pInicial,meio-1,k);
+        }
+    }else{
+        cout << "Nenhum 'Acontecimento Historico' encontrado no Local digitado!" << endl;
+    }
+}
+
+
+//usa data inicial e final do internalo(Ex; acontecimentos,1990,2000,tamanho)
+void busca_por_intervalo(Acontecimento* vet, int inicio,int final,int tamanho) {
+    
+    for(int i=0;i <= tamanho;i++)
+        if(vet[i].ano >= inicio and vet[i].ano <= final){
+        imprimiVetor(vet,i);
+    }
+
+}
+//busca linear por nome
+void buscaLinear_por_nome (Acontecimento* vet,int tamanho, string nome){
+    bool achou = false;
+    int i = 0;
+    while(achou == false and i < tamanho){
+       if(nome == vet[i].nome){
+        imprimiVetor(vet,i);
+        achou = true;
+       }
+       i++;
+    }
+    if(achou == false){
+        cout << "Nenhum 'Acontecimento Historico' encontrado com o ID digitado!" << endl;
+    }
+}
+
 
 void busca_por_intervalo(Acontecimento* vet, int inicio,int final,int tamanho) {
 
     for (int i = 0; i <= tamanho; i++)
         if (vet[i].ano >= inicio and vet[i].ano <= final){
-        imprimeVetor(vet, i);
+        imprimiVetor(vet,i);
     }
 }
 
@@ -292,8 +357,15 @@ int main() {
     Acontecimento teste2 = cria_acontecimento("Removi222do??", "Remoção2", 2026,
                                               "Brasil, 22México, Removido");
 
-    //teste da ordenaçao por data                                      
-    //ordena_por_ano(acontecimentos,tamanho); 
+    
+
+
+    ordena_por_id(acontecimentos,tamanho);
+
+    //acontecimento de teste_gravar
+    Acontecimento teste_gravar = cria_acontecimento("Brasil x Haite","Mexico",2026,"Brasil e Haite");
+    adiciona_acontecimento(acontecimentos,tamanho,capacidade,teste_gravar,ultimo_id);
+    
 
     cout << "===== DEBUG: ACONTECIMENTOS CARREGADOS =====\n";
     for (unsigned int i = 0; i < tamanho; i++) {
@@ -312,33 +384,58 @@ int main() {
 
     remove_acontecimento(acontecimentos, tamanho, teste2);
 
-    cout <<"---------------------------------------------\n";
-    cout <<"---------------------------------------------\n";
-    cout <<"--------------- vetor ordenado---------------\n";
-    ordena_por_ano(acontecimentos,tamanho);
-    for (unsigned int i = 0; i < tamanho; i++) {
-        cout << "Registro #" << i << '\n';
-        cout << "ID: " << acontecimentos[i].id << '\n';
-        cout << "Nome: " << acontecimentos[i].nome << '\n';
-        cout << "Local: " << acontecimentos[i].local << '\n';
-        cout << "Ano: " << acontecimentos[i].ano << '\n';
-        cout << "Paises: " << acontecimentos[i].paises_envolvidos << '\n';
-        cout << "----------------------------------------\n";
-    }
-    ordena_por_ano(acontecimentos,tamanho);
+    //teste gravar
 
-    /*busca linear por nome
-    string procurado;
-    getline(cin,procurado);
-    busca_por_nome(acontecimentos,tamanho, procurado);
+        remove_acontecimento(acontecimentos,tamanho,teste_gravar);
+       
+        gravarModificao_no_csv(acontecimentos,tamanho);
+        
+
+
+    /*teste da ordenaçao por ano
+    ordena_por_ano(acontecimentos,tamanho);
+    cout <<"---------------------------------------------\n";
+    cout <<"------------vetor ordenado por Ano------------\n";
+    cout <<"----------------------------------------------\n";
+    ordena_por_ano(acontecimentos,tamanho);
+    for (int i = 0; i < tamanho; i++) {
+        imprimiVetor(acontecimentos,i);
+    }
     */
+   
+    /*teste de ordenaçao por id (retorna a ordem original do vetor)
+    ordena_por_id(acontecimentos,tamanho);
+    cout <<"---------------------------------------------\n";
+    cout <<"------------vetor ordenado por ID------------\n";
+    cout <<"----------------------------------------------\n";
     
-        /* Busca por data
+    for (int i = 0; i < tamanho; i++) {
+        imprimiVetor(acontecimentos,i);
+    }
+        */
+    /*teste busca por nome
+    
+   string procurado;
+   getline(cin,procurado);
+   
+   buscaLinear_por_nome(acontecimentos,tamanho,procurado);
+    */
+
+    /* Busca por data (precisa de chamar a funçao ordenaçao_por_ano antes de usar)
     int Ano;
     cin >> Ano;
     
-    buscaBinaria_por_data(acontecimentos,0,tamanho-1,Ano);
+    buscaBinaria_por_data(acontecimentos,0,tamanho-1,Ano);(modo de usar)
     */
+
+    /*Teste busca por intervalo 
+    cout <<"---------------------------------------------\n";
+    cout <<"------------ BUSCA POR INTERVALO---------------\n";
+    cout <<"---------------------------------------------\n";
+    int AnoI, AnoF;
+    cin >> AnoI >> AnoF;
+    busca_por_intervalo(acontecimentos,AnoI,AnoF,tamanho);*/
+
 
     /*Teste busca por intervalo 
     cout <<"---------------------------------------------\n";
