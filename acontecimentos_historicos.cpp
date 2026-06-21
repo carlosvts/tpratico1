@@ -1,18 +1,31 @@
+/*
+# * Equipe:
+# * Carlos Vinicius Teixeira de Souza
+# * Alexsandro Ferreira de Carvalho
+# * Ana Julia Piva de Oliveira Gurita
+# *
+# * Tema: Acontecimentos historicos
+# * Campos: id, nome, local, ano, paises_envolvidos, removido
+# */
+
 #include <fstream>
 #include <iostream>
 #include <string>
 
 /*
- *  O que precisa ser feito:
- *  Gravar alterações (remoções e inserções)
- *  Buscar um registro
- *  Mostrar na tela o arquivo inteiro e um trecho
- *  Ordenar os dados
+ *  Falta:
+ *  Menu principal
+ *  Gravar alterações no CSV
+ *  Impressão por trecho
+ *  Segunda ordenação
+ *  Integrar buscas e operações com entrada do usuário
  *
- *  O que já foi feito:
- *  Carregar CSV,
- *  Alocar dinamicamente,
- *  criar, remover e adicionar acontecimentos
+ *  Feito:
+ *  Leitura do CSV
+ *  Vetor dinâmico com redimensionamento
+ *  Inserção e remoção lógica
+ *  Busca por nome e por ano
+ *  Ordenação por ano
  */
 
 using namespace std;
@@ -37,12 +50,13 @@ Acontecimento cria_acontecimento(string nome, string local, int ano,
     return Acontecimento{-1, nome, local, ano, paises_envolvidos};
 }
 
-void redimensiona_vetor(Acontecimento*& vetor, int& capacidade,
+void redimensiona_vetor(Acontecimento*& vetor, unsigned int& capacidade,
                         int fator_aumento) {
     int capacidade_antiga = capacidade;
     Acontecimento* novo_vetor = new Acontecimento[capacidade + fator_aumento];
     // copia os elementos do vetor antigo para o vetor novo
-    for (int i = 0; i < capacidade_antiga; i++) {
+    for (int i = 0; i < capacidade_antiga; i++) 
+    {
         novo_vetor[i] = vetor[i];
     }
     // limpa o espaço de memória do vetor antigo
@@ -52,10 +66,11 @@ void redimensiona_vetor(Acontecimento*& vetor, int& capacidade,
     vetor = novo_vetor;
 }
 
-void adiciona_acontecimento(Acontecimento*& vetor, int& tamanho_atual,
-                            int& capacidade, Acontecimento ac, int& ultimo_id) {
+void adiciona_acontecimento(Acontecimento*& vetor, unsigned int& tamanho_atual,
+                            unsigned int& capacidade, Acontecimento ac, int& ultimo_id) {
     // aqui redimensiona o vetor somente em um, já que estamos adicionando
-    if (tamanho_atual == capacidade) {
+    if (tamanho_atual == capacidade) 
+    {
         redimensiona_vetor(vetor, capacidade, 1);
     }
     // fazendo "manualmente" para evitar erros de ponteiros da string
@@ -68,20 +83,23 @@ void adiciona_acontecimento(Acontecimento*& vetor, int& tamanho_atual,
     tamanho_atual++;
 }
 
-void remove_acontecimento(Acontecimento*& vetor, int& tamanho_atual,
-                          Acontecimento& ac, int& ultimo_id) {
+void remove_acontecimento(Acontecimento*& vetor, unsigned int& tamanho_atual,
+                          Acontecimento& ac) {
     bool removeu = false;
     // loop pelos acontecimentos
-    for (int i = 0; i < tamanho_atual; ++i) {
+    for (unsigned int i = 0; i < tamanho_atual; ++i)
+    {
         // para saber qual é o acontecimento, basta checar o seu id
-        if (vetor[i].id == ac.id) {
+        if (vetor[i].id == ac.id)
+        {
             // como a remoção pode ser feita de forma lógica
             // basta colocar a flag = true
             vetor[i].removido = true;
             removeu = true;
         }
     }
-    if (!removeu) {
+    if (!removeu)
+    {
         cout << "ID: " << ac.id << "[" << ac.nome
              << "] Não existe na base de dados \n tem certeza que você o "
                 "adicionou?\n";
@@ -90,7 +108,8 @@ void remove_acontecimento(Acontecimento*& vetor, int& tamanho_atual,
 
 int string_para_int(string str) {
     int resposta = 0;
-    for (int i = 0; i < (int)str.size(); i++) {
+    for (int i = 0; i < (int)str.size(); i++)
+    {
         // pensando no numero 123
         // resposta = 0 * 10 + 1 --> resposta  = 1
         // resposta = 1 * 10 + 2 --> resposta  = 12
@@ -249,9 +268,17 @@ void buscaLinear_por_nome (Acontecimento* vet,int tamanho, string nome){
 }
 
 
+void busca_por_intervalo(Acontecimento* vet, int inicio,int final,int tamanho) {
+
+    for (int i = 0; i <= tamanho; i++)
+        if (vet[i].ano >= inicio and vet[i].ano <= final){
+        imprimiVetor(vet,i);
+    }
+}
+
 int main() {
     // capacidade inicial
-    int capacidade = QUANTIDADE_INICIAL_VETOR;
+    unsigned int capacidade = QUANTIDADE_INICIAL_VETOR;
     Acontecimento* acontecimentos = new Acontecimento[capacidade];
     ifstream entrada("acontecimentos_historicos.csv");
     if (not(entrada)) {
@@ -263,7 +290,7 @@ int main() {
     int idx = 0;
     int i = 0;
     int ultimo_id = 0;
-    int tamanho = 0;
+    unsigned int tamanho = 0;
     bool aspas = false;
 
     getline(entrada, linha);  // Pula o cabeçalho
@@ -284,11 +311,13 @@ int main() {
                 // Precisa ser !aspas e nao aspas = true pois se tudo for
                 // true ele sempre ignorará as aspas
                 aspas = !aspas;
-            } else if (linha[i] == ',' and !aspas) {
+            } 
+            else if (linha[i] == ',' and !aspas) {
                 campos[idx] = campo;
                 campo = "";
                 idx++;
-            } else {
+            } 
+            else {
                 campo += linha[i];
             }
             i++;
@@ -322,7 +351,7 @@ int main() {
         "Removido??", "Remoção", 2026, "Brasil, México, Removido");
     adiciona_acontecimento(acontecimentos, tamanho, capacidade, teste_remover,
                            ultimo_id);
-    remove_acontecimento(acontecimentos, tamanho, teste_remover, ultimo_id);
+    remove_acontecimento(acontecimentos, tamanho, teste_remover);
 
     // Testando remover um acontecimento sem ter colocado ele na base de dados
     Acontecimento teste2 = cria_acontecimento("Removi222do??", "Remoção2", 2026,
@@ -339,7 +368,7 @@ int main() {
     
 
     cout << "===== DEBUG: ACONTECIMENTOS CARREGADOS =====\n";
-    for (int i = 0; i < tamanho; i++) {
+    for (unsigned int i = 0; i < tamanho; i++) {
         cout << "Registro #" << i << '\n';
         cout << "ID: " << acontecimentos[i].id << '\n';
         cout << "Nome: " << acontecimentos[i].nome << '\n';
@@ -353,11 +382,11 @@ int main() {
     cout << "Quantidade carregada: " << tamanho << '\n';
     cout << "Capacidade do vetor: " << capacidade << '\n';
 
-    remove_acontecimento(acontecimentos, tamanho, teste2, ultimo_id);
+    remove_acontecimento(acontecimentos, tamanho, teste2);
 
     //teste gravar
 
-        remove_acontecimento(acontecimentos,tamanho,teste_gravar,teste_gravar.id);
+        remove_acontecimento(acontecimentos,tamanho,teste_gravar);
        
         gravarModificao_no_csv(acontecimentos,tamanho);
         
@@ -408,7 +437,13 @@ int main() {
     busca_por_intervalo(acontecimentos,AnoI,AnoF,tamanho);*/
 
 
-
+    /*Teste busca por intervalo 
+    cout <<"---------------------------------------------\n";
+    cout <<"------------ BUSCA POR INTERVALO---------------\n";
+    cout <<"---------------------------------------------\n";
+    int AnoI, AnoF;
+    cin >> AnoI >> AnoF;
+    busca_por_intervalo(acontecimentos,AnoI,AnoF,tamanho);*/
     // Finalizada toda a lógica, limpa o vetor
     delete[] acontecimentos;
     return 0;
