@@ -234,10 +234,24 @@ void buscaBinaria_por_data(Acontecimento *vet, int pInicial, int pFinal, int k)
 
 void buscaBinaria_por_id(Acontecimento *vet, int pInicial, int pFinal, int k)
 {
+    if (pInicial > pFinal)
+    {
+        cout << "Nenhum 'Acontecimento Historico' encontrado com o ID digitado!"
+             << endl;
+        return;
+    }
+
     int meio = (pInicial + pFinal) / 2;
     if (vet[meio].id == k)
     {
-        imprimiVetor(vet, meio);
+        if (vet[meio].removido)
+        {
+            cout << "O acontecimento com ID " << k << " foi removido!" << endl;
+        }
+        else
+        {
+            imprimiVetor(vet, meio);
+        }
         return;
     }
 
@@ -254,7 +268,7 @@ void buscaBinaria_por_id(Acontecimento *vet, int pInicial, int pFinal, int k)
     }
     else
     {
-        cout << "Nenhum 'Acontecimento Historico' encontrado no Local digitado!"
+        cout << "Nenhum 'Acontecimento Historico' encontrado com o ID digitado!"
              << endl;
     }
 }
@@ -371,11 +385,12 @@ int main()
         cout << "2 - Remover acontecimento\n";
         cout << "3 - Buscar por nome\n";
         cout << "4 - Buscar por ano\n";
-        cout << "5 - Mostrar todos\n";
-        cout << "6 - Buscar por intervalo de anos\n";
-        cout << "7 - Ordenar por ID\n";
-        cout << "8 - Ordenar por ano\n";
-        cout << "9 - Salvar alteracoes\n";
+        cout << "5 - Buscar por ID\n";
+        cout << "6 - Mostrar todos\n";
+        cout << "7 - Buscar por intervalo de anos\n";
+        cout << "8 - Ordenar por ID\n";
+        cout << "9 - Ordenar por ano\n";
+        cout << "10 - Salvar alteracoes\n";
         cout << "0 - Sair\n";
         cout << "Opcao: ";
 
@@ -458,6 +473,21 @@ int main()
 
         case 5:
         {
+            int id;
+
+            cout << "ID: ";
+            cin >> id;
+
+            ordena_por_id(acontecimentos, tamanho);
+
+            buscaBinaria_por_id(acontecimentos, 0,
+                                static_cast<int>(tamanho) - 1, id);
+
+            break;
+        }
+
+        case 6:
+        {
             for (unsigned int i = 0; i < tamanho; i++)
             {
                 imprimiVetor(acontecimentos, i);
@@ -465,7 +495,7 @@ int main()
             break;
         }
 
-        case 6:
+        case 7:
         {
             int inicio, fim;
 
@@ -480,17 +510,17 @@ int main()
             break;
         }
 
-        case 7:
+        case 8:
             ordena_por_id(acontecimentos, tamanho);
             cout << "Ordenado por ID!\n";
             break;
 
-        case 8:
+        case 9:
             ordena_por_ano(acontecimentos, tamanho);
             cout << "Ordenado por ano!\n";
             break;
 
-        case 9:
+        case 10:
             gravarModificao_no_csv(acontecimentos, tamanho);
             cout << "Arquivo salvo!\n";
             break;
