@@ -149,7 +149,7 @@ void imprimiVetor(Acontecimento *vet, int indice)
     }
 }
 
-// ordenaçao para busca binaria por ano
+// ordenaçao sequencial de busca por ano
 void ordena_por_ano(Acontecimento *&vetor, int tamanho)
 {
     int j;
@@ -188,47 +188,6 @@ void ordena_por_id(Acontecimento *&vetor, int tamanho)
             }
             vetor[j] = aux;
         }
-    }
-}
-void buscaBinaria_por_data(Acontecimento *vet, int pInicial, int pFinal, int k)
-{
-    int meio = (pInicial + pFinal) / 2;
-    if (vet[meio].ano == k)
-    {
-        imprimiVetor(vet, meio);
-
-        int olha_esqueda = meio - 1;
-        while (olha_esqueda >= 0 and vet[olha_esqueda].ano == vet[meio].ano)
-        {
-            imprimiVetor(vet, olha_esqueda);
-            olha_esqueda--;
-        }
-
-        int olha_direita = meio + 1;
-        while (olha_direita <= pFinal and
-               vet[olha_direita].ano == vet[meio].ano)
-        {
-            imprimiVetor(vet, olha_direita);
-            olha_direita++;
-        }
-        return;
-    }
-
-    if (pFinal > pInicial)
-    {
-        if (vet[meio].ano < k)
-        {
-            return buscaBinaria_por_data(vet, meio + 1, pFinal, k);
-        }
-        else if (vet[meio].ano > k)
-        {
-            return buscaBinaria_por_data(vet, pInicial, meio - 1, k);
-        }
-    }
-    else
-    {
-        cout << "Nenhum 'Acontecimento Historico' encontrado na data escolhida!"
-             << endl;
     }
 }
 
@@ -273,15 +232,58 @@ void buscaBinaria_por_id(Acontecimento *vet, int pInicial, int pFinal, int k)
     }
 }
 
-// usa data inicial e final do internalo(Ex; acontecimentos,1990,2000,tamanho)
-void busca_por_intervalo(Acontecimento *vet, int inicio, int final, int tamanho)
+// usa data inicial e final do intervalo(Ex; acontecimentos,1990,2000,tamanho)
+void busca_por_ano(Acontecimento *vet, int inicio, int final, int tamanho)
 {
+    if (inicio > final)
+    {
+        cout << "O ano inicial não pode ser maior que o ano final!" << endl;
+        return;
+    }
 
-    for (int i = 0; i <= tamanho - 1; i++)
-        if (vet[i].ano >= inicio and vet[i].ano <= final)
+    bool achou = false;
+    for (int i = 0; i < tamanho; i++)
+    {
+        if (vet[i].ano >= inicio and vet[i].ano <= final and
+            vet[i].removido == false)
         {
             imprimiVetor(vet, i);
+            achou = true;
         }
+    }
+
+    if (achou == false)
+    {
+        cout << "Nenhum acontecimento ativo encontrado nesse intervalo de anos!"
+             << endl;
+    }
+}
+
+void busca_por_intervalo_id(Acontecimento *vet, int inicio, int final,
+                            int tamanho)
+{
+    if (inicio > final)
+    {
+        cout << "O ID inicial não pode ser maior que o ID final!" << endl;
+        return;
+    }
+
+    bool achou = false;
+    for (int i = 0; i < tamanho; i++)
+    {
+        if (vet[i].id >= inicio and vet[i].id <= final and
+            vet[i].removido == false)
+        {
+            imprimiVetor(vet, i);
+            achou = true;
+        }
+    }
+
+    if (achou == false)
+    {
+        cout << "Nenhum acontecimento ativo encontrado nesse intervalo de IDs!"
+             << endl;
+    }
 }
 // busca linear por nome
 void buscaLinear_por_nome(Acontecimento *vet, int tamanho, string nome)
@@ -388,9 +390,10 @@ int main()
         cout << "5 - Buscar por ID\n";
         cout << "6 - Mostrar todos\n";
         cout << "7 - Buscar por intervalo de anos\n";
-        cout << "8 - Ordenar por ID\n";
-        cout << "9 - Ordenar por ano\n";
-        cout << "10 - Salvar alteracoes\n";
+        cout << "8 - Mostrar trecho por intervalo de IDs\n";
+        cout << "9 - Ordenar por ID\n";
+        cout << "10 - Ordenar por ano\n";
+        cout << "11 - Salvar alteracoes\n";
         cout << "0 - Sair\n";
         cout << "Opcao: ";
 
@@ -464,9 +467,7 @@ int main()
             cout << "Ano: ";
             cin >> ano;
 
-            ordena_por_ano(acontecimentos, tamanho);
-
-            buscaBinaria_por_data(acontecimentos, 0, tamanho - 1, ano);
+            busca_por_ano(acontecimentos, ano, ano, tamanho);
 
             break;
         }
@@ -505,22 +506,37 @@ int main()
             cout << "Ano final: ";
             cin >> fim;
 
-            busca_por_intervalo(acontecimentos, inicio, fim, tamanho);
+            busca_por_ano(acontecimentos, inicio, fim, tamanho);
 
             break;
         }
 
         case 8:
+        {
+            int inicio, fim;
+
+            cout << "ID inicial: ";
+            cin >> inicio;
+
+            cout << "ID final: ";
+            cin >> fim;
+
+            busca_por_intervalo_id(acontecimentos, inicio, fim, tamanho);
+
+            break;
+        }
+
+        case 9:
             ordena_por_id(acontecimentos, tamanho);
             cout << "Ordenado por ID!\n";
             break;
 
-        case 9:
+        case 10:
             ordena_por_ano(acontecimentos, tamanho);
             cout << "Ordenado por ano!\n";
             break;
 
-        case 10:
+        case 11:
             gravarModificao_no_csv(acontecimentos, tamanho);
             cout << "Arquivo salvo!\n";
             break;
