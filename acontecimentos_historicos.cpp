@@ -268,14 +268,6 @@ void buscaLinear_por_nome (Acontecimento* vet,int tamanho, string nome){
 }
 
 
-void busca_por_intervalo(Acontecimento* vet, int inicio,int final,int tamanho) {
-
-    for (int i = 0; i <= tamanho; i++)
-        if (vet[i].ano >= inicio and vet[i].ano <= final){
-        imprimiVetor(vet,i);
-    }
-}
-
 int main() {
     // capacidade inicial
     unsigned int capacidade = QUANTIDADE_INICIAL_VETOR;
