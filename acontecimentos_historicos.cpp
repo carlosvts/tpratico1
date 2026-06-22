@@ -286,6 +286,46 @@ void busca_por_intervalo_id(Acontecimento *vet, int inicio, int final,
              << endl;
     }
 }
+
+void mostra_trecho_por_posicao(Acontecimento *vet, int inicio, int final, int tamanho)
+{
+    if (inicio < 1 or final < 1)
+    {
+        cout << "As posições devem ser maiores que zero!" << endl;
+        return;
+    }
+
+    if (inicio > tamanho or final > tamanho)
+    {
+        cout << "As posições devem estar dentro do tamanho do arquivo!" << endl;
+        return;
+    }
+
+    if (inicio > final)
+    {
+        cout << "A posição inicial não pode ser maior que a posição final!"
+             << endl;
+        return;
+    }
+
+    bool achou = false;
+    for (int posicao = inicio; posicao <= final; posicao++)
+    {
+        int indice = posicao - 1;
+        if (vet[indice].removido == false)
+        {
+            cout << "Posição no arquivo: " << posicao << '\n';
+            imprime_vetor(vet, indice);
+            achou = true;
+        }
+    }
+
+    if (achou == false)
+    {
+        cout << "Todos os registros desse trecho foram removidos!" << endl;
+    }
+}
+
 // busca linear por nome
 void buscaLinear_por_nome(Acontecimento *vet, int tamanho, string nome)
 {
@@ -405,9 +445,10 @@ int main()
         cout << "6 - Mostrar todos\n";
         cout << "7 - Buscar por intervalo de anos\n";
         cout << "8 - Mostrar trecho por intervalo de IDs\n";
-        cout << "9 - Ordenar por ID\n";
-        cout << "10 - Ordenar por ano\n";
-        cout << "11 - Salvar alteracoes\n";
+        cout << "9 - Mostrar trecho por posições\n";
+        cout << "10 - Ordenar por ID\n";
+        cout << "11 - Ordenar por ano\n";
+        cout << "12 - Salvar alteracoes\n";
         cout << "0 - Sair\n";
         cout << "Opcao: ";
 
@@ -541,16 +582,31 @@ int main()
         }
 
         case 9:
+        {
+            int inicio, fim;
+
+            cout << "Posição inicial: ";
+            cin >> inicio;
+
+            cout << "Posição final: ";
+            cin >> fim;
+
+            mostra_trecho_por_posicao(acontecimentos, inicio, fim, tamanho);
+
+            break;
+        }
+
+        case 10:
             ordena_por_id(acontecimentos, tamanho);
             cout << "Ordenado por ID!\n";
             break;
 
-        case 10:
+        case 11:
             ordena_por_ano(acontecimentos, tamanho);
             cout << "Ordenado por ano!\n";
             break;
 
-        case 11:
+        case 12:
             {
                 bool ok = gravarModificao_no_csv(acontecimentos, tamanho);
                 if (ok)
