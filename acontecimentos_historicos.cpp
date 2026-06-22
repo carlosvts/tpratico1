@@ -58,7 +58,7 @@ void adiciona_acontecimento(Acontecimento *&vetor, unsigned int &tamanho_atual,
                             unsigned int &capacidade, Acontecimento ac,
                             int &ultimo_id)
 {
-    // aqui redimensiona o vetor somente em um, já que estamos adicionando
+    // aqui redimensiona o vetor para caber o novo acontecimento 
     if (tamanho_atual == capacidade)
     {
         redimensiona_vetor(vetor, capacidade, FATOR_AUMENTO_VETOR);
