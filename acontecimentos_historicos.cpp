@@ -16,7 +16,8 @@ using namespace std;
 const int FATOR_AUMENTO_VETOR = 5;
 const int QUANTIDADE_INICIAL_VETOR = 40;
 
-struct Acontecimento {
+struct Acontecimento
+{
     int id;
     string nome;
     string local;
@@ -27,18 +28,20 @@ struct Acontecimento {
 
 // por cópia
 Acontecimento cria_acontecimento(string nome, string local, int ano,
-                                 string paises_envolvidos) {
+                                 string paises_envolvidos)
+{
     // Defini que um id -1 significa que o objeto foi criado, mas ainda não está
     // adicionado na base de dados
     return Acontecimento{-1, nome, local, ano, paises_envolvidos};
 }
 
-void redimensiona_vetor(Acontecimento*& vetor, unsigned int& capacidade,
-                        int fator_aumento) {
+void redimensiona_vetor(Acontecimento *&vetor, unsigned int &capacidade,
+                        int fator_aumento)
+{
     int capacidade_antiga = capacidade;
-    Acontecimento* novo_vetor = new Acontecimento[capacidade + fator_aumento];
+    Acontecimento *novo_vetor = new Acontecimento[capacidade + fator_aumento];
     // copia os elementos do vetor antigo para o vetor novo
-    for (int i = 0; i < capacidade_antiga; i++) 
+    for (int i = 0; i < capacidade_antiga; i++)
     {
         novo_vetor[i] = vetor[i];
     }
@@ -49,10 +52,12 @@ void redimensiona_vetor(Acontecimento*& vetor, unsigned int& capacidade,
     vetor = novo_vetor;
 }
 
-void adiciona_acontecimento(Acontecimento*& vetor, unsigned int& tamanho_atual,
-                            unsigned int& capacidade, Acontecimento ac, int& ultimo_id) {
+void adiciona_acontecimento(Acontecimento *&vetor, unsigned int &tamanho_atual,
+                            unsigned int &capacidade, Acontecimento ac,
+                            int &ultimo_id)
+{
     // aqui redimensiona o vetor somente em um, já que estamos adicionando
-    if (tamanho_atual == capacidade) 
+    if (tamanho_atual == capacidade)
     {
         redimensiona_vetor(vetor, capacidade, FATOR_AUMENTO_VETOR);
     }
@@ -66,8 +71,9 @@ void adiciona_acontecimento(Acontecimento*& vetor, unsigned int& tamanho_atual,
     tamanho_atual++;
 }
 
-void remove_acontecimento(Acontecimento*& vetor, unsigned int& tamanho_atual,
-                          Acontecimento& ac) {
+void remove_acontecimento(Acontecimento *&vetor, unsigned int &tamanho_atual,
+                          Acontecimento &ac)
+{
     bool removeu = false;
     // loop pelos acontecimentos
     for (unsigned int i = 0; i < tamanho_atual; ++i)
@@ -89,7 +95,8 @@ void remove_acontecimento(Acontecimento*& vetor, unsigned int& tamanho_atual,
     }
 }
 
-int string_para_int(string str) {
+int string_para_int(string str)
+{
     int resposta = 0;
     for (int i = 0; i < (int)str.size(); i++)
     {
@@ -102,28 +109,34 @@ int string_para_int(string str) {
     return resposta;
 }
 
-void gravarModificao_no_csv(Acontecimento* vet,int tamanho){
+void gravarModificao_no_csv(Acontecimento *vet, int tamanho)
+{
     ofstream gravar("novo_acontecimentos_historicos.csv");
-     if(!gravar){
+    if (!gravar)
+    {
         cout << "Erro ao gravar modificação!" << endl;
-     }else
+    }
+    else
 
-     gravar << "id,nome,local,ano,paises_envolvidos\n";
-     for(int i = 0; i < tamanho;i++){
-        if(vet[i].removido == false) {
+        gravar << "id,nome,local,ano,paises_envolvidos\n";
+    for (int i = 0; i < tamanho; i++)
+    {
+        if (vet[i].removido == false)
+        {
             gravar << vet[i].id << ",";
             gravar << vet[i].nome << ",";
             gravar << vet[i].local << ",";
             gravar << vet[i].ano << ",";
             gravar << '"' << vet[i].paises_envolvidos << '"' << "\n";
         }
-     }
-     gravar.close();
-
+    }
+    gravar.close();
 }
 
-void imprimiVetor(Acontecimento* vet,int indice){
-    if(vet[indice].removido == false){
+void imprimiVetor(Acontecimento *vet, int indice)
+{
+    if (vet[indice].removido == false)
+    {
         cout << "Registro #" << indice << '\n';
         cout << "ID: " << vet[indice].id << '\n';
         cout << "Nome: " << vet[indice].nome << '\n';
@@ -134,128 +147,153 @@ void imprimiVetor(Acontecimento* vet,int indice){
     }
 }
 
+// ordenaçao para busca binaria por ano
+void ordena_por_ano(Acontecimento *&vetor, int tamanho)
+{
+    int j;
+    for (int gap = tamanho / 2; gap > 0; gap /= 2)
+    {
+        for (int i = gap; i < tamanho; i++)
+        {
+            Acontecimento aux = vetor[i];
 
-
-//ordenaçao para busca binaria por ano
-void ordena_por_ano(Acontecimento*& vetor, int tamanho){
-  int j;
-  for(int gap = tamanho/2; gap > 0; gap /= 2){
-      for(int i = gap; i < tamanho; i++){
-        Acontecimento aux = vetor[i];
-        
-        j = i;
-        while(j >= gap and vetor[j-gap].ano > aux.ano){
-          vetor[j] = vetor[j-gap];
-          j -= gap;
+            j = i;
+            while (j >= gap and vetor[j - gap].ano > aux.ano)
+            {
+                vetor[j] = vetor[j - gap];
+                j -= gap;
+            }
+            vetor[j] = aux;
         }
-        vetor[j] = aux;
-      }
-  }
+    }
 }
 
-//ordenaçao por id
-void ordena_por_id(Acontecimento*& vetor, int tamanho){
-  int j;
-  for(int gap = tamanho/2; gap > 0; gap /= 2){
-      for(int i = gap; i < tamanho; i++){
-        Acontecimento aux = vetor[i];
-        
-        j = i;
-        while(j >= gap and vetor[j-gap].id > aux.id){
-          vetor[j] = vetor[j-gap];
-          j -= gap;
-        }
-        vetor[j] = aux;
-      }
-  }
-}
-void buscaBinaria_por_data(Acontecimento* vet,int pInicial,int pFinal,int k){
-    int meio = (pInicial + pFinal)/2;
-    if(vet[meio].ano == k){
-        imprimiVetor(vet,meio);
+// ordenaçao por id
+void ordena_por_id(Acontecimento *&vetor, int tamanho)
+{
+    int j;
+    for (int gap = tamanho / 2; gap > 0; gap /= 2)
+    {
+        for (int i = gap; i < tamanho; i++)
+        {
+            Acontecimento aux = vetor[i];
 
-        int olha_esqueda = meio -1;
-        while(olha_esqueda >= 0 and vet[olha_esqueda].ano == vet[meio].ano ){
-            imprimiVetor(vet,olha_esqueda);
+            j = i;
+            while (j >= gap and vetor[j - gap].id > aux.id)
+            {
+                vetor[j] = vetor[j - gap];
+                j -= gap;
+            }
+            vetor[j] = aux;
+        }
+    }
+}
+void buscaBinaria_por_data(Acontecimento *vet, int pInicial, int pFinal, int k)
+{
+    int meio = (pInicial + pFinal) / 2;
+    if (vet[meio].ano == k)
+    {
+        imprimiVetor(vet, meio);
+
+        int olha_esqueda = meio - 1;
+        while (olha_esqueda >= 0 and vet[olha_esqueda].ano == vet[meio].ano)
+        {
+            imprimiVetor(vet, olha_esqueda);
             olha_esqueda--;
         }
 
-        int olha_direita = meio+1;
-         while( olha_direita <= pFinal and vet[olha_direita].ano == vet[meio].ano ){
-            imprimiVetor(vet,olha_direita);
+        int olha_direita = meio + 1;
+        while (olha_direita <= pFinal and
+               vet[olha_direita].ano == vet[meio].ano)
+        {
+            imprimiVetor(vet, olha_direita);
             olha_direita++;
-         }
-         
+        }
     }
 
-    if(pFinal > pInicial){
-        if(vet[meio].ano < k)
+    if (pFinal > pInicial)
+    {
+        if (vet[meio].ano < k)
         {
-            return buscaBinaria_por_data(vet,meio+1,pFinal,k);
+            return buscaBinaria_por_data(vet, meio + 1, pFinal, k);
         }
-        else if(vet[meio].ano > k)
+        else if (vet[meio].ano > k)
         {
-            return buscaBinaria_por_data(vet,pInicial,meio-1,k);
+            return buscaBinaria_por_data(vet, pInicial, meio - 1, k);
         }
-    }else{
-        cout << "Nenhum 'Acontecimento Historico' encontrado na data escolhida!" << endl;
+    }
+    else
+    {
+        cout << "Nenhum 'Acontecimento Historico' encontrado na data escolhida!"
+             << endl;
     }
 }
 
-
-void buscaBinaria_por_id(Acontecimento* vet,int pInicial,int pFinal,int k){
-    int meio = (pInicial + pFinal)/2;
-    if(vet[meio].id== k){
-        imprimiVetor(vet,meio);
-
+void buscaBinaria_por_id(Acontecimento *vet, int pInicial, int pFinal, int k)
+{
+    int meio = (pInicial + pFinal) / 2;
+    if (vet[meio].id == k)
+    {
+        imprimiVetor(vet, meio);
     }
 
-    if(pFinal > pInicial){
-        if(vet[meio].id < k)
+    if (pFinal > pInicial)
+    {
+        if (vet[meio].id < k)
         {
-            return buscaBinaria_por_id(vet,meio+1,pFinal,k);
+            return buscaBinaria_por_id(vet, meio + 1, pFinal, k);
         }
-        else if(vet[meio].id > k)
+        else if (vet[meio].id > k)
         {
-            return buscaBinaria_por_id(vet,pInicial,meio-1,k);
+            return buscaBinaria_por_id(vet, pInicial, meio - 1, k);
         }
-    }else{
-        cout << "Nenhum 'Acontecimento Historico' encontrado no Local digitado!" << endl;
+    }
+    else
+    {
+        cout << "Nenhum 'Acontecimento Historico' encontrado no Local digitado!"
+             << endl;
     }
 }
 
+// usa data inicial e final do internalo(Ex; acontecimentos,1990,2000,tamanho)
+void busca_por_intervalo(Acontecimento *vet, int inicio, int final, int tamanho)
+{
 
-//usa data inicial e final do internalo(Ex; acontecimentos,1990,2000,tamanho)
-void busca_por_intervalo(Acontecimento* vet, int inicio,int final,int tamanho) {
-    
-    for(int i=0;i <= tamanho;i++)
-        if(vet[i].ano >= inicio and vet[i].ano <= final){
-        imprimiVetor(vet,i);
-    }
-
+    for (int i = 0; i <= tamanho; i++)
+        if (vet[i].ano >= inicio and vet[i].ano <= final)
+        {
+            imprimiVetor(vet, i);
+        }
 }
-//busca linear por nome
-void buscaLinear_por_nome (Acontecimento* vet,int tamanho, string nome){
+// busca linear por nome
+void buscaLinear_por_nome(Acontecimento *vet, int tamanho, string nome)
+{
     bool achou = false;
     int i = 0;
-    while(achou == false and i < tamanho){
-       if(nome == vet[i].nome){
-        imprimiVetor(vet,i);
-        achou = true;
-       }
-       i++;
+    while (achou == false and i < tamanho)
+    {
+        if (nome == vet[i].nome)
+        {
+            imprimiVetor(vet, i);
+            achou = true;
+        }
+        i++;
     }
-    if(achou == false){
-        cout << "Nenhum 'Acontecimento Historico' encontrado com o ID digitado!" << endl;
+    if (achou == false)
+    {
+        cout << "Nenhum 'Acontecimento Historico' encontrado com o ID digitado!"
+             << endl;
     }
 }
 
-int main() {
+int main()
+{
     // capacidade inicial
     unsigned int capacidade = QUANTIDADE_INICIAL_VETOR;
-    Acontecimento* acontecimentos = new Acontecimento[capacidade];
+    Acontecimento *acontecimentos = new Acontecimento[capacidade];
     ifstream entrada("acontecimentos_historicos.csv");
-    if (not(entrada)) {
+    if (not(entrada))
+    {
         cout << "Erro: não foi possível abrir o arquivo" << endl;
     }
     string campos[5];
@@ -267,31 +305,37 @@ int main() {
     unsigned int tamanho = 0;
     bool aspas = false;
 
-    getline(entrada, linha);  // Pula o cabeçalho
+    getline(entrada, linha); // Pula o cabeçalho
 
-    while (getline(entrada, linha)) {
+    while (getline(entrada, linha))
+    {
         idx = 0;
         aspas = false;
         i = 0;
 
-        if (tamanho == capacidade) {
+        if (tamanho == capacidade)
+        {
             // redimensiona_vetor aumenta a capacidade por referencia
             redimensiona_vetor(acontecimentos, capacidade, FATOR_AUMENTO_VETOR);
         }
 
-        while (linha[i] != '\0') {
+        while (linha[i] != '\0')
+        {
             // checa se é uma aspas duplas
-            if (linha[i] == '"') {
+            if (linha[i] == '"')
+            {
                 // Precisa ser !aspas e nao aspas = true pois se tudo for
                 // true ele sempre ignorará as aspas
                 aspas = !aspas;
-            } 
-            else if (linha[i] == ',' and !aspas) {
+            }
+            else if (linha[i] == ',' and !aspas)
+            {
                 campos[idx] = campo;
                 campo = "";
                 idx++;
-            } 
-            else {
+            }
+            else
+            {
                 campo += linha[i];
             }
             i++;
@@ -314,27 +358,30 @@ int main() {
     }
     ultimo_id = acontecimentos[tamanho - 1].id;
     // a partir de agora todos os dados estão carregadas na struct
-int opcao;
+    int opcao;
 
-do {
-    cout << " SISTEMA DE ACONTECIMENTOS HISTORICOS\n";
-    cout << "1 - Inserir acontecimento\n";
-    cout << "2 - Remover acontecimento\n";
-    cout << "3 - Buscar por nome\n";
-    cout << "4 - Buscar por ano\n";
-    cout << "5 - Mostrar todos\n";
-    cout << "6 - Buscar por intervalo de anos\n";
-    cout << "7 - Ordenar por ID\n";
-    cout << "8 - Ordenar por ano\n";
-    cout << "9 - Salvar alteracoes\n";
-    cout << "0 - Sair\n";
-    cout << "Opcao: ";
+    do
+    {
+        cout << " SISTEMA DE ACONTECIMENTOS HISTORICOS\n";
+        cout << "1 - Inserir acontecimento\n";
+        cout << "2 - Remover acontecimento\n";
+        cout << "3 - Buscar por nome\n";
+        cout << "4 - Buscar por ano\n";
+        cout << "5 - Mostrar todos\n";
+        cout << "6 - Buscar por intervalo de anos\n";
+        cout << "7 - Ordenar por ID\n";
+        cout << "8 - Ordenar por ano\n";
+        cout << "9 - Salvar alteracoes\n";
+        cout << "0 - Sair\n";
+        cout << "Opcao: ";
 
-    cin >> opcao;
+        cin >> opcao;
 
-    switch(opcao) {
+        switch (opcao)
+        {
 
-        case 1: {
+        case 1:
+        {
             string nome, local, paises;
             int ano;
 
@@ -353,22 +400,17 @@ do {
             cout << "Paises envolvidos: ";
             getline(cin, paises);
 
-            Acontecimento novo =
-                cria_acontecimento(nome, local, ano, paises);
+            Acontecimento novo = cria_acontecimento(nome, local, ano, paises);
 
-            adiciona_acontecimento(
-                acontecimentos,
-                tamanho,
-                capacidade,
-                novo,
-                ultimo_id
-            );
+            adiciona_acontecimento(acontecimentos, tamanho, capacidade, novo,
+                                   ultimo_id);
 
             cout << "Registro adicionado!\n";
             break;
         }
 
-        case 2: {
+        case 2:
+        {
             int id;
 
             cout << "ID para remover: ";
@@ -377,16 +419,13 @@ do {
             Acontecimento temp;
             temp.id = id;
 
-            remove_acontecimento(
-                acontecimentos,
-                tamanho,
-                temp
-            );
+            remove_acontecimento(acontecimentos, tamanho, temp);
 
             break;
         }
 
-        case 3: {
+        case 3:
+        {
             string nome;
 
             cin.ignore();
@@ -394,47 +433,36 @@ do {
             cout << "Nome: ";
             getline(cin, nome);
 
-            buscaLinear_por_nome(
-                acontecimentos,
-                tamanho,
-                nome
-            );
+            buscaLinear_por_nome(acontecimentos, tamanho, nome);
 
             break;
         }
 
-        case 4: {
+        case 4:
+        {
             int ano;
 
             cout << "Ano: ";
             cin >> ano;
 
-            ordena_por_ano(
-                acontecimentos,
-                tamanho
-            );
+            ordena_por_ano(acontecimentos, tamanho);
 
-            buscaBinaria_por_data(
-                acontecimentos,
-                0,
-                tamanho - 1,
-                ano
-            );
+            buscaBinaria_por_data(acontecimentos, 0, tamanho - 1, ano);
 
             break;
         }
 
-        case 5: {
-            for(unsigned int i = 0; i < tamanho; i++) {
-                imprimiVetor(
-                    acontecimentos,
-                    i
-                );
+        case 5:
+        {
+            for (unsigned int i = 0; i < tamanho; i++)
+            {
+                imprimiVetor(acontecimentos, i);
             }
             break;
         }
 
-        case 6: {
+        case 6:
+        {
             int inicio, fim;
 
             cout << "Ano inicial: ";
@@ -443,37 +471,23 @@ do {
             cout << "Ano final: ";
             cin >> fim;
 
-            busca_por_intervalo(
-                acontecimentos,
-                inicio,
-                fim,
-                tamanho
-            );
+            busca_por_intervalo(acontecimentos, inicio, fim, tamanho);
 
             break;
         }
 
         case 7:
-            ordena_por_id(
-                acontecimentos,
-                tamanho
-            );
+            ordena_por_id(acontecimentos, tamanho);
             cout << "Ordenado por ID!\n";
             break;
 
         case 8:
-            ordena_por_ano(
-                acontecimentos,
-                tamanho
-            );
+            ordena_por_ano(acontecimentos, tamanho);
             cout << "Ordenado por ano!\n";
             break;
 
         case 9:
-            gravarModificao_no_csv(
-                acontecimentos,
-                tamanho
-            );
+            gravarModificao_no_csv(acontecimentos, tamanho);
             cout << "Arquivo salvo!\n";
             break;
 
@@ -483,11 +497,11 @@ do {
 
         default:
             cout << "Opcao invalida!\n";
-    }
+        }
 
-} while(opcao != 0);
+    } while (opcao != 0);
 
     delete[] acontecimentos;
-    
+
     return 0;
 }
