@@ -24,7 +24,7 @@ struct Acontecimento
     string local;
     int ano;
     string paises_envolvidos;
-    bool removido = false;
+    bool removido;
 };
 
 // por cópia
@@ -33,14 +33,15 @@ Acontecimento cria_acontecimento(string nome, string local, int ano,
 {
     // Defini que um id -1 significa que o objeto foi criado, mas ainda não está
     // adicionado na base de dados
-    return Acontecimento{-1, nome, local, ano, paises_envolvidos};
+    return Acontecimento{-1, nome, local, ano, paises_envolvidos, false};
 }
 
 void redimensiona_vetor(Acontecimento *&vetor, unsigned int &capacidade,
                         int fator_aumento)
 {
     int capacidade_antiga = capacidade;
-    Acontecimento *novo_vetor = new Acontecimento[capacidade + fator_aumento];
+    Acontecimento *novo_vetor =
+        new Acontecimento[capacidade + fator_aumento]();
     // copia os elementos do vetor antigo para o vetor novo
     for (int i = 0; i < capacidade_antiga; i++)
     {
@@ -69,6 +70,7 @@ void adiciona_acontecimento(Acontecimento *&vetor, unsigned int &tamanho_atual,
     vetor[tamanho_atual].local = ac.local;
     vetor[tamanho_atual].ano = ac.ano;
     vetor[tamanho_atual].paises_envolvidos = ac.paises_envolvidos;
+    vetor[tamanho_atual].removido = false;
     tamanho_atual++;
 }
 
@@ -351,7 +353,7 @@ int main()
 {
     // capacidade inicial
     unsigned int capacidade = QUANTIDADE_INICIAL_VETOR;
-    Acontecimento *acontecimentos = new Acontecimento[capacidade];
+    Acontecimento *acontecimentos = new Acontecimento[capacidade]();
     
     cout << "Digite o nome do arquivo .csv de acontecimentos historicos para carregar no sistema: ";
     string arquivo;
@@ -418,8 +420,7 @@ int main()
         acontecimentos[tamanho].local = campos[2];
         acontecimentos[tamanho].ano = string_para_int(campos[3]);
         acontecimentos[tamanho].paises_envolvidos = campos[4];
-        // nao precisa marcar o removido como false pois a struct ja é
-        // criada com valor padrão de false
+        acontecimentos[tamanho].removido = false;
         tamanho++;
     }
 
