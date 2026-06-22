@@ -110,13 +110,13 @@ int string_para_int(string str)
     return resposta;
 }
 
-void gravarModificao_no_csv(Acontecimento *vet, int tamanho)
+bool gravarModificao_no_csv(Acontecimento *vet, int tamanho)
 {
     ofstream gravar("novo_acontecimentos_historicos.csv");
     if (!gravar)
     {
         cout << "Erro ao gravar modificação!" << endl;
-        return;
+        return false;
     }
     else
 
@@ -133,9 +133,10 @@ void gravarModificao_no_csv(Acontecimento *vet, int tamanho)
         }
     }
     gravar.close();
+    return true;
 }
 
-void imprimiVetor(Acontecimento *vet, int indice)
+void imprime_vetor(Acontecimento *vet, int indice)
 {
     if (vet[indice].removido == false)
     {
@@ -209,7 +210,7 @@ void buscaBinaria_por_id(Acontecimento *vet, int pInicial, int pFinal, int k)
         }
         else
         {
-            imprimiVetor(vet, meio);
+            imprime_vetor(vet, meio);
         }
         return;
     }
@@ -247,7 +248,7 @@ void busca_por_ano(Acontecimento *vet, int inicio, int final, int tamanho)
         if (vet[i].ano >= inicio and vet[i].ano <= final and
             vet[i].removido == false)
         {
-            imprimiVetor(vet, i);
+            imprime_vetor(vet, i);
             achou = true;
         }
     }
@@ -274,7 +275,7 @@ void busca_por_intervalo_id(Acontecimento *vet, int inicio, int final,
         if (vet[i].id >= inicio and vet[i].id <= final and
             vet[i].removido == false)
         {
-            imprimiVetor(vet, i);
+            imprime_vetor(vet, i);
             achou = true;
         }
     }
@@ -294,14 +295,14 @@ void buscaLinear_por_nome(Acontecimento *vet, int tamanho, string nome)
     {
         if (nome == vet[i].nome and vet[i].removido == false)
         {
-            imprimiVetor(vet, i);
+            imprime_vetor(vet, i);
             achou = true;
         }
         i++;
     }
     if (achou == false)
     {
-        cout << "Nenhum 'Acontecimento Historico' encontrado com o ID digitado!"
+        cout << "Nenhum 'Acontecimento Historico' encontrado com o nome digitado!"
              << endl;
     }
 }
@@ -311,7 +312,12 @@ int main()
     // capacidade inicial
     unsigned int capacidade = QUANTIDADE_INICIAL_VETOR;
     Acontecimento *acontecimentos = new Acontecimento[capacidade];
-    ifstream entrada("acontecimentos_historicos.csv");
+    
+    cout << "Digite o nome do arquivo .csv de acontecimentos historicos para carregar no sistema: ";
+    string arquivo;
+    getline(cin, arquivo);
+
+    ifstream entrada(arquivo);
     if (not(entrada))
     {
         cout << "Erro: não foi possível abrir o arquivo" << endl;
@@ -376,7 +382,15 @@ int main()
         // criada com valor padrão de false
         tamanho++;
     }
-    ultimo_id = acontecimentos[tamanho - 1].id;
+
+    // Adicionei essa parte pois caso reabra o novo arquivo o ultimo_id nao necessariamente
+    // é o ultimo devido as possiveis ordenações presentes no código
+    unsigned int maiorid = acontecimentos[0].id;
+    for (unsigned int i = 0; i < tamanho; ++i)
+        if (maiorid < acontecimentos[i].id)
+            maiorid = acontecimentos[i].id;
+    ultimo_id = maiorid;
+
     // a partir de agora todos os dados estão carregadas na struct
     int opcao;
 
@@ -491,7 +505,7 @@ int main()
         {
             for (unsigned int i = 0; i < tamanho; i++)
             {
-                imprimiVetor(acontecimentos, i);
+                imprime_vetor(acontecimentos, i);
             }
             break;
         }
@@ -537,9 +551,14 @@ int main()
             break;
 
         case 11:
-            gravarModificao_no_csv(acontecimentos, tamanho);
-            cout << "Arquivo salvo!\n";
-            break;
+            {
+                bool ok = gravarModificao_no_csv(acontecimentos, tamanho);
+                if (ok)
+                    cout << "Arquivo salvo!\n";
+                else 
+                    cout << "Erro ao gravar as alterações em um novo arquivo.\n";
+                break;
+            }
 
         case 0:
             cout << "Encerrando...\n";
