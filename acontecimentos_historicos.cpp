@@ -11,23 +11,6 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-
-/*
- *  Falta:
- *  Menu principal
- *  Gravar alterações no CSV
- *  Impressão por trecho
- *  Segunda ordenação
- *  Integrar buscas e operações com entrada do usuário
- *
- *  Feito:
- *  Leitura do CSV
- *  Vetor dinâmico com redimensionamento
- *  Inserção e remoção lógica
- *  Busca por nome e por ano
- *  Ordenação por ano
- */
-
 using namespace std;
 
 const int FATOR_AUMENTO_VETOR = 5;
@@ -71,7 +54,7 @@ void adiciona_acontecimento(Acontecimento*& vetor, unsigned int& tamanho_atual,
     // aqui redimensiona o vetor somente em um, já que estamos adicionando
     if (tamanho_atual == capacidade) 
     {
-        redimensiona_vetor(vetor, capacidade, 1);
+        redimensiona_vetor(vetor, capacidade, FATOR_AUMENTO_VETOR);
     }
     // fazendo "manualmente" para evitar erros de ponteiros da string
     ac.id = ++ultimo_id;
@@ -267,7 +250,6 @@ void buscaLinear_por_nome (Acontecimento* vet,int tamanho, string nome){
     }
 }
 
-
 int main() {
     // capacidade inicial
     unsigned int capacidade = QUANTIDADE_INICIAL_VETOR;
@@ -331,112 +313,181 @@ int main() {
         tamanho++;
     }
     ultimo_id = acontecimentos[tamanho - 1].id;
-    // TODO a partir de agora todos os dados estão carregadas na struct
+    // a partir de agora todos os dados estão carregadas na struct
+int opcao;
 
-    // print de debug, remover depois
-    Acontecimento teste =
-        cria_acontecimento("teste1", "local de teste", 2026, "Brasil");
-    adiciona_acontecimento(acontecimentos, tamanho, capacidade, teste,
-                           ultimo_id);
+do {
+    cout << " SISTEMA DE ACONTECIMENTOS HISTORICOS\n";
+    cout << "1 - Inserir acontecimento\n";
+    cout << "2 - Remover acontecimento\n";
+    cout << "3 - Buscar por nome\n";
+    cout << "4 - Buscar por ano\n";
+    cout << "5 - Mostrar todos\n";
+    cout << "6 - Buscar por intervalo de anos\n";
+    cout << "7 - Ordenar por ID\n";
+    cout << "8 - Ordenar por ano\n";
+    cout << "9 - Salvar alteracoes\n";
+    cout << "0 - Sair\n";
+    cout << "Opcao: ";
 
-    Acontecimento teste_remover = cria_acontecimento(
-        "Removido??", "Remoção", 2026, "Brasil, México, Removido");
-    adiciona_acontecimento(acontecimentos, tamanho, capacidade, teste_remover,
-                           ultimo_id);
-    remove_acontecimento(acontecimentos, tamanho, teste_remover);
+    cin >> opcao;
 
-    // Testando remover um acontecimento sem ter colocado ele na base de dados
-    Acontecimento teste2 = cria_acontecimento("Removi222do??", "Remoção2", 2026,
-                                              "Brasil, 22México, Removido");
+    switch(opcao) {
 
-    
+        case 1: {
+            string nome, local, paises;
+            int ano;
 
+            cin.ignore();
 
-    ordena_por_id(acontecimentos,tamanho);
+            cout << "Nome: ";
+            getline(cin, nome);
 
-    //acontecimento de teste_gravar
-    Acontecimento teste_gravar = cria_acontecimento("Brasil x Haite","Mexico",2026,"Brasil e Haite");
-    adiciona_acontecimento(acontecimentos,tamanho,capacidade,teste_gravar,ultimo_id);
-    
+            cout << "Local: ";
+            getline(cin, local);
 
-    cout << "===== DEBUG: ACONTECIMENTOS CARREGADOS =====\n";
-    for (unsigned int i = 0; i < tamanho; i++) {
-        cout << "Registro #" << i << '\n';
-        cout << "ID: " << acontecimentos[i].id << '\n';
-        cout << "Nome: " << acontecimentos[i].nome << '\n';
-        cout << "Local: " << acontecimentos[i].local << '\n';
-        cout << "Ano: " << acontecimentos[i].ano << '\n';
-        cout << "Paises: " << acontecimentos[i].paises_envolvidos << '\n';
-        cout << "Removido: " << acontecimentos[i].removido << '\n';
-        cout << "----------------------------------------\n";
+            cout << "Ano: ";
+            cin >> ano;
+            cin.ignore();
+
+            cout << "Paises envolvidos: ";
+            getline(cin, paises);
+
+            Acontecimento novo =
+                cria_acontecimento(nome, local, ano, paises);
+
+            adiciona_acontecimento(
+                acontecimentos,
+                tamanho,
+                capacidade,
+                novo,
+                ultimo_id
+            );
+
+            cout << "Registro adicionado!\n";
+            break;
+        }
+
+        case 2: {
+            int id;
+
+            cout << "ID para remover: ";
+            cin >> id;
+
+            Acontecimento temp;
+            temp.id = id;
+
+            remove_acontecimento(
+                acontecimentos,
+                tamanho,
+                temp
+            );
+
+            break;
+        }
+
+        case 3: {
+            string nome;
+
+            cin.ignore();
+
+            cout << "Nome: ";
+            getline(cin, nome);
+
+            buscaLinear_por_nome(
+                acontecimentos,
+                tamanho,
+                nome
+            );
+
+            break;
+        }
+
+        case 4: {
+            int ano;
+
+            cout << "Ano: ";
+            cin >> ano;
+
+            ordena_por_ano(
+                acontecimentos,
+                tamanho
+            );
+
+            buscaBinaria_por_data(
+                acontecimentos,
+                0,
+                tamanho - 1,
+                ano
+            );
+
+            break;
+        }
+
+        case 5: {
+            for(unsigned int i = 0; i < tamanho; i++) {
+                imprimiVetor(
+                    acontecimentos,
+                    i
+                );
+            }
+            break;
+        }
+
+        case 6: {
+            int inicio, fim;
+
+            cout << "Ano inicial: ";
+            cin >> inicio;
+
+            cout << "Ano final: ";
+            cin >> fim;
+
+            busca_por_intervalo(
+                acontecimentos,
+                inicio,
+                fim,
+                tamanho
+            );
+
+            break;
+        }
+
+        case 7:
+            ordena_por_id(
+                acontecimentos,
+                tamanho
+            );
+            cout << "Ordenado por ID!\n";
+            break;
+
+        case 8:
+            ordena_por_ano(
+                acontecimentos,
+                tamanho
+            );
+            cout << "Ordenado por ano!\n";
+            break;
+
+        case 9:
+            gravarModificao_no_csv(
+                acontecimentos,
+                tamanho
+            );
+            cout << "Arquivo salvo!\n";
+            break;
+
+        case 0:
+            cout << "Encerrando...\n";
+            break;
+
+        default:
+            cout << "Opcao invalida!\n";
     }
 
-    cout << "Quantidade carregada: " << tamanho << '\n';
-    cout << "Capacidade do vetor: " << capacidade << '\n';
+} while(opcao != 0);
 
-    remove_acontecimento(acontecimentos, tamanho, teste2);
-
-    //teste gravar
-
-        remove_acontecimento(acontecimentos,tamanho,teste_gravar);
-       
-        gravarModificao_no_csv(acontecimentos,tamanho);
-        
-
-
-    /*teste da ordenaçao por ano
-    ordena_por_ano(acontecimentos,tamanho);
-    cout <<"---------------------------------------------\n";
-    cout <<"------------vetor ordenado por Ano------------\n";
-    cout <<"----------------------------------------------\n";
-    ordena_por_ano(acontecimentos,tamanho);
-    for (int i = 0; i < tamanho; i++) {
-        imprimiVetor(acontecimentos,i);
-    }
-    */
-   
-    /*teste de ordenaçao por id (retorna a ordem original do vetor)
-    ordena_por_id(acontecimentos,tamanho);
-    cout <<"---------------------------------------------\n";
-    cout <<"------------vetor ordenado por ID------------\n";
-    cout <<"----------------------------------------------\n";
-    
-    for (int i = 0; i < tamanho; i++) {
-        imprimiVetor(acontecimentos,i);
-    }
-        */
-    /*teste busca por nome
-    
-   string procurado;
-   getline(cin,procurado);
-   
-   buscaLinear_por_nome(acontecimentos,tamanho,procurado);
-    */
-
-    /* Busca por data (precisa de chamar a funçao ordenaçao_por_ano antes de usar)
-    int Ano;
-    cin >> Ano;
-    
-    buscaBinaria_por_data(acontecimentos,0,tamanho-1,Ano);(modo de usar)
-    */
-
-    /*Teste busca por intervalo 
-    cout <<"---------------------------------------------\n";
-    cout <<"------------ BUSCA POR INTERVALO---------------\n";
-    cout <<"---------------------------------------------\n";
-    int AnoI, AnoF;
-    cin >> AnoI >> AnoF;
-    busca_por_intervalo(acontecimentos,AnoI,AnoF,tamanho);*/
-
-
-    /*Teste busca por intervalo 
-    cout <<"---------------------------------------------\n";
-    cout <<"------------ BUSCA POR INTERVALO---------------\n";
-    cout <<"---------------------------------------------\n";
-    int AnoI, AnoF;
-    cin >> AnoI >> AnoF;
-    busca_por_intervalo(acontecimentos,AnoI,AnoF,tamanho);*/
-    // Finalizada toda a lógica, limpa o vetor
     delete[] acontecimentos;
+    
     return 0;
 }
