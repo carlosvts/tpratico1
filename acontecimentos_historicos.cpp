@@ -6,6 +6,7 @@
 # *
 # * Tema: Acontecimentos historicos
 # * Campos: id, nome, local, ano, paises_envolvidos, removido
+# * Turma: 10A
 # */
 
 #include <fstream>
@@ -115,6 +116,7 @@ void gravarModificao_no_csv(Acontecimento *vet, int tamanho)
     if (!gravar)
     {
         cout << "Erro ao gravar modificação!" << endl;
+        return;
     }
     else
 
@@ -209,6 +211,7 @@ void buscaBinaria_por_data(Acontecimento *vet, int pInicial, int pFinal, int k)
             imprimiVetor(vet, olha_direita);
             olha_direita++;
         }
+        return;
     }
 
     if (pFinal > pInicial)
@@ -235,6 +238,7 @@ void buscaBinaria_por_id(Acontecimento *vet, int pInicial, int pFinal, int k)
     if (vet[meio].id == k)
     {
         imprimiVetor(vet, meio);
+        return;
     }
 
     if (pFinal > pInicial)
@@ -259,7 +263,7 @@ void buscaBinaria_por_id(Acontecimento *vet, int pInicial, int pFinal, int k)
 void busca_por_intervalo(Acontecimento *vet, int inicio, int final, int tamanho)
 {
 
-    for (int i = 0; i <= tamanho; i++)
+    for (int i = 0; i <= tamanho - 1; i++)
         if (vet[i].ano >= inicio and vet[i].ano <= final)
         {
             imprimiVetor(vet, i);
@@ -272,7 +276,7 @@ void buscaLinear_por_nome(Acontecimento *vet, int tamanho, string nome)
     int i = 0;
     while (achou == false and i < tamanho)
     {
-        if (nome == vet[i].nome)
+        if (nome == vet[i].nome and vet[i].removido == false)
         {
             imprimiVetor(vet, i);
             achou = true;
