@@ -102,10 +102,14 @@ int string_para_int(string str)
 {
     int resposta = 0;
     bool negativo = false;
+    int inicio = 0;
     if (str[0] == '-')
+    {
+        inicio = 1;
         negativo = true;
+    }
 
-    for (int i = 0; i < (int)str.size(); i++)
+    for (int i = inicio; i < (int)str.size(); i++)
     {
         // pensando no numero 123
         // resposta = 0 * 10 + 1 --> resposta  = 1
@@ -121,9 +125,9 @@ int string_para_int(string str)
     return resposta;
 }
 
-bool gravarModificao_no_csv(Acontecimento *vet, int tamanho)
+bool gravar_modificacao_no_csv(Acontecimento *vet, int tamanho)
 {
-    ofstream gravar("novo_acontecimentos_historicos.csv");
+    ofstream gravar("novos_acontecimentos_historicos.csv");
     if (!gravar)
     {
         cout << "Erro ao gravar modificação!" << endl;
@@ -618,7 +622,7 @@ int main()
 
         case 12:
             {
-                bool ok = gravarModificao_no_csv(acontecimentos, tamanho);
+                bool ok = gravar_modificacao_no_csv(acontecimentos, tamanho);
                 if (ok)
                     cout << "Arquivo salvo!\n";
                 else 
