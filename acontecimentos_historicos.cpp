@@ -101,6 +101,10 @@ void remove_acontecimento(Acontecimento *&vetor, unsigned int &tamanho_atual,
 int string_para_int(string str)
 {
     int resposta = 0;
+    bool negativo = false;
+    if (str[0] == '-')
+        negativo = true;
+
     for (int i = 0; i < (int)str.size(); i++)
     {
         // pensando no numero 123
@@ -109,6 +113,11 @@ int string_para_int(string str)
         // resposta = 12 * 10 + 3 _-> resposta = 123
         resposta = resposta * 10 + (str[i] - '0');
     }
+
+    if (negativo)
+        // se existe um sinal de menos, inverte o sinal
+        resposta = -resposta;
+
     return resposta;
 }
 
